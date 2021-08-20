@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SamsaraDayPlanner</string>
+    <string name="tasks">Tasks</string>
+    <string name="manage_task">Manage Task</string>
+    <string name="dropdown">Dropdown Arrow</string>
+    <string name="name">Name</string>
+    <string name="color">COLOR</string>
+    <string name="manage_hour">Manage Hour</string>
+</resources>
