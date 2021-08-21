@@ -1,5 +1,7 @@
 package com.example.samsarakmm.common
 
+import kotlinx.coroutines.Job
+
 /**
  * Base class for ViewLogic classes, which are similar in nature to Presenters or Controllers.
  *
@@ -11,6 +13,7 @@ package com.example.samsarakmm.common
 </T> */
 abstract class BaseViewLogic<T> {
     private var isCancelled = false
+    protected lateinit var jobTracker: Job
 
     /**
      * If the View indicates that it is to be destroyed, we want to inform the Logic class

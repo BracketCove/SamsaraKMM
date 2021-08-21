@@ -11,8 +11,5 @@ import com.example.samsarakmm.domain.constants.HOUR_MODE
  * We hide the implementation details of the back end, from the front end (client)
  */
 interface IDayStorage {
-    fun getDay(onSuccess: (Day) -> Unit, onError: (Exception) -> Unit)
-    fun updateDay(day: Day, onSuccess: (Unit) -> Unit, onError: (Exception) -> Unit )
-    fun getHourWithMode(hour: Int, onSuccess: (Hour, HOUR_MODE) -> Unit, onError: (Exception) -> Unit)
-    fun updateHour(hour: Hour, onSuccess: (Unit) -> Unit, onError: (Exception) -> Unit)
+
 }

@@ -6,4 +6,5 @@
     <string name="name">Name</string>
     <string name="color">COLOR</string>
     <string name="manage_hour">Manage Hour</string>
+    <string name="loading">LOADING</string>
 </resources>

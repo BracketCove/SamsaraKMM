@@ -1,89 +1,151 @@
 package com.example.samsarakmm.storage
 
-import com.jetbrains.handson.kmm.shared.entity.Links
-import com.jetbrains.handson.kmm.shared.entity.Rocket
-import com.jetbrains.handson.kmm.shared.entity.RocketLaunch
+import com.example.samsarakmm.domain.*
+import com.example.samsarakmm.domain.constants.QUARTER
+import com.squareup.sqldelight.ColumnAdapter
+import com.squareup.sqldelight.EnumColumnAdapter
+
+val listOfStringsAdapter = object : ColumnAdapter<List<String>, String> {
+    override fun decode(databaseValue: String) =
+        if (databaseValue.isEmpty()) {
+            listOf()
+        } else {
+            databaseValue.split(",")
+        }
+
+    override fun encode(value: List<String>) = value.joinToString(separator = ",")
+}
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
-    private val database = AppDatabase(databaseDriverFactory.createDriver())
+    private val database = AppDatabase(
+        databaseDriverFactory.createDriver(),
+        UserTask.Adapter(
+            EnumColumnAdapter(),
+            EnumColumnAdapter()
+        )
+    )
     private val dbQuery = database.appDatabaseQueries
 
-    internal fun clearDatabase() {
-        dbQuery.transaction {
-            dbQuery.removeAllRockets()
-            dbQuery.removeAllLaunches()
+    internal fun getAllTasks(): Array<Task> {
+        return dbQuery.selectTasks().executeAsList().map { userTask: UserTask ->
+            Task(
+                userTask.taskId,
+                userTask.taskName,
+                userTask.icon,
+                userTask.color
+            )
+        }.toTypedArray()
+    }
+
+    internal fun getTaskById(taskId: Int): Task {
+        return dbQuery.selectTaskById(taskId).executeAsOne().let {
+            Task(
+                it.taskId,
+                it.taskName,
+                it.icon,
+                it.color
+            )
         }
     }
 
-    internal fun getAllLaunches(): List<RocketLaunch> {
-        return dbQuery.selectAllLaunchesInfo(::mapLaunchSelecting).executeAsList()
+
+    internal fun getHoursOfDay(): Array<Hour> {
+        return dbQuery.selectHoursOfDay().executeAsList().map { hour: HourOfDay ->
+            hour.toHour()
+        }.toTypedArray()
     }
 
-    private fun mapLaunchSelecting(
-        flightNumber: Long,
-        missionName: String,
-        launchYear: Int,
-        rocketId: String,
-        details: String?,
-        launchSuccess: Boolean?,
-        launchDateUTC: String,
-        missionPatchUrl: String?,
-        articleUrl: String?,
-        rocket_id: String?,
-        name: String?,
-        type: String?
-    ): RocketLaunch {
-        return RocketLaunch(
-            flightNumber = flightNumber.toInt(),
-            missionName = missionName,
-            launchYear = launchYear,
-            details = details,
-            launchDateUTC = launchDateUTC,
-            launchSuccess = launchSuccess,
-            rocket = Rocket(
-                id = rocketId,
-                name = name!!,
-                type = type!!
+    internal fun getHourByInteger(hourInteger: Int): Hour {
+        dbQuery.selectHourByInteger(hourInteger).executeAsOne().let { hour ->
+            return hour.toHour()
+        }
+    }
+
+    private fun HourOfDay.toHour(): Hour = Hour(
+        arrayOf(
+            QuarterHour(
+                firstQuarterTaskId,
+                QUARTER.ZERO,
+                firstQuarterIsActive
             ),
-            links = Links(
-                missionPatchUrl = missionPatchUrl,
-                articleUrl = articleUrl
+            QuarterHour(
+                secondQuarterTaskId,
+                QUARTER.FIFTEEN,
+                secondQuarterIsActive
+            ),
+            QuarterHour(
+                thirdQuarterTaskId,
+                QUARTER.THIRTY,
+                thirdQuarterIsActive
+            ),
+            QuarterHour(
+                firstQuarterTaskId,
+                QUARTER.FOURTY_FIVE,
+                fourthQuarterIsActive
             )
+        ),
+        hourInteger
+    )
+
+    internal fun updateTask(task: Task) {
+        dbQuery.updateTask(
+            task.taskName,
+            task.taskIcon,
+            task.taskColor,
+            task.taskId
         )
     }
 
-    internal fun createLaunches(launches: List<RocketLaunch>) {
-        dbQuery.transaction {
-            launches.forEach { launch ->
-                val rocket = dbQuery.selectRocketById(launch.rocket.id).executeAsOneOrNull()
-                if (rocket == null) {
-                    insertRocket(launch)
-                }
+    internal fun updateHour(hour: Hour) {
+        dbQuery.updateHour(
+            hour.quarters[0].taskId,
+            hour.quarters[0].isActive,
+            hour.quarters[1].taskId,
+            hour.quarters[1].isActive,
+            hour.quarters[2].taskId,
+            hour.quarters[2].isActive,
+            hour.quarters[3].taskId,
+            hour.quarters[3].isActive,
+            hour.hourInteger
+        )
+    }
 
-                insertLaunch(launch)
+    internal fun createHoursOfDay(day: Day) {
+        dbQuery.transaction {
+            day.hours.forEach { hour ->
+                insertHourOfDay(hour)
             }
         }
     }
 
-    private fun insertRocket(launch: RocketLaunch) {
-        dbQuery.insertRocket(
-            id = launch.rocket.id,
-            name = launch.rocket.name,
-            type = launch.rocket.type
+    internal fun createTasks(tasks: Tasks) {
+        dbQuery.transaction {
+            tasks.tasks.forEach { task ->
+                insertTask(task)
+            }
+        }
+    }
+
+    internal fun insertHourOfDay(hour: Hour) {
+        dbQuery.insertHour(
+            hour.hourInteger,
+            hour.quarters[0].taskId,
+            hour.quarters[0].isActive,
+            hour.quarters[1].taskId,
+            hour.quarters[1].isActive,
+            hour.quarters[2].taskId,
+            hour.quarters[2].isActive,
+            hour.quarters[3].taskId,
+            hour.quarters[3].isActive,
         )
     }
 
-    private fun insertLaunch(launch: RocketLaunch) {
-        dbQuery.insertLaunch(
-            flightNumber = launch.flightNumber.toLong(),
-            missionName = launch.missionName,
-            launchYear = launch.launchYear,
-            rocketId = launch.rocket.id,
-            details = launch.details,
-            launchSuccess = launch.launchSuccess ?: false,
-            launchDateUTC = launch.launchDateUTC,
-            missionPatchUrl = launch.links.missionPatchUrl,
-            articleUrl = launch.links.articleUrl
+    internal fun insertTask(task: Task) {
+        dbQuery.insertTask(
+            task.taskId,
+            task.taskName,
+            task.taskIcon,
+            task.taskColor
         )
     }
 }

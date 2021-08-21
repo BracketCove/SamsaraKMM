@@ -6,6 +6,7 @@ import com.example.samsarakmm.android.ui.managehourview.HourViewEvent
 import com.example.samsarakmm.android.ui.managehourview.HourViewLogic
 import com.example.samsarakmm.android.ui.managehourview.HourViewModel
 import com.example.samsarakmm.common.BaseViewLogic
+import com.example.samsarakmm.common.ProductionDispatcherProvider
 
 
 internal fun HourActivity.buildLogic(
@@ -15,7 +16,7 @@ internal fun HourActivity.buildLogic(
        return HourViewLogic(
            this,
            vm,
-           locator.dayStorageImpl,
-           locator.taskStorageImpl
+           locator.storage,
+           ProductionDispatcherProvider()
        )
 }

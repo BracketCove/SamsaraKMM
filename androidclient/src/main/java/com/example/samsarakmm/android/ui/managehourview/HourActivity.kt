@@ -42,7 +42,7 @@ class HourActivity : AppCompatActivity(), IHourContract.Container {
             SamsaraTheme {
                 HourScreen(
                     viewModel = vm,
-                    onEvent = logic::onViewEvent
+                    eventHandler = logic::onViewEvent
                 )
             }
         }

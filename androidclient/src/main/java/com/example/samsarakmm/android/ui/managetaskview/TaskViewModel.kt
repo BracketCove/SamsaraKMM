@@ -1,12 +1,13 @@
 package com.example.samsarakmm.android.ui.managetaskview
 
+import com.example.samsarakmm.common.BaseViewModel
 import com.example.samsarakmm.domain.constants.COLOR
 import com.example.samsarakmm.domain.constants.ICON
 
 /**
  * A data store (cache) for front end session data
  */
-class TaskViewModel(val taskId: Int) {
+class TaskViewModel(val taskId: Int): BaseViewModel() {
     private lateinit var name: String
     private lateinit var color: COLOR
     private lateinit var icon: ICON

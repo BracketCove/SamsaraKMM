@@ -6,6 +6,7 @@ import com.example.samsarakmm.android.ui.managetaskview.TaskViewEvent
 import com.example.samsarakmm.android.ui.managetaskview.TaskViewLogic
 import com.example.samsarakmm.android.ui.managetaskview.TaskViewModel
 import com.example.samsarakmm.common.BaseViewLogic
+import com.example.samsarakmm.common.ProductionDispatcherProvider
 
 internal fun TaskActivity.buildLogic(
     vm: TaskViewModel,
@@ -16,6 +17,7 @@ internal fun TaskActivity.buildLogic(
     return TaskViewLogic(
         this,
         vm,
-        locator.taskStorageImpl
+        locator.storage,
+        ProductionDispatcherProvider()
     )
 }

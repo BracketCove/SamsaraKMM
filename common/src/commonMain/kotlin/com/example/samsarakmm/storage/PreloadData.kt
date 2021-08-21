@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.persistence
+package com.example.samsarakmm.storage
 
 import com.example.samsarakmm.domain.*
 import com.example.samsarakmm.domain.constants.COLOR
@@ -22,6 +22,7 @@ import com.example.samsarakmm.domain.constants.QUARTER
  * Class is left without access modifier to denote "package private"
  */
 internal object PreloadData {
+    //TODO apply Lazy delegates so we don't unnecessarily load this data into memory
     /**
      * Returns the initial set of tasks which the user can work with. I allow the user to update
      * the names of these tasks as they see fit, and to assign various ICONs to the tasks from a

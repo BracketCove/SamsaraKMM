@@ -42,6 +42,13 @@ internal val quarterHourBlockText = TextStyle(
     color = Color.White.copy(alpha = .86f)
 )
 
+val mainTitle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Light,
+    fontSize = 48.sp,
+    textAlign = TextAlign.Center
+)
+
 fun dropdownText(color: Color) = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Normal,

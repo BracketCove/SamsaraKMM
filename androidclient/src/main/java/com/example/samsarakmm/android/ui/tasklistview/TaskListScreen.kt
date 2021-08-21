@@ -8,7 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -21,13 +21,39 @@ import androidx.compose.ui.unit.dp
 import com.example.samsarakmm.android.R
 import com.example.samsarakmm.android.common.toResId
 import com.example.samsarakmm.android.ui.components.AppToolbar
+import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.domain.Task
 import com.example.samsarakmm.domain.constants.ICON
 
 @Composable
 fun TaskListScreen(
-    vm: TaskListViewModel,
+    viewModel: TaskListViewModel,
     eventHandler: (TaskListViewEvent) -> Unit
+) {
+    var showLoading by remember {
+        mutableStateOf(
+            true
+        )
+    }
+
+    viewModel.subIsLoading = {
+        showLoading = it
+    }
+
+    if (showLoading) {
+        LoadingScreen()
+    } else {
+        TaskListViewContent(
+            eventHandler = eventHandler,
+            viewModel = viewModel
+        )
+    }
+}
+
+@Composable
+fun TaskListViewContent(
+    eventHandler: (TaskListViewEvent) -> Unit,
+    viewModel: TaskListViewModel
 ) {
     BoxWithConstraints {
         val size = with(LocalDensity.current) { (constraints.maxWidth / 2).toDp() }
@@ -43,13 +69,13 @@ fun TaskListScreen(
 
                 TaskListColumn(
                     size = size,
-                    tasks = vm.tasks.getFirstHalf(),
+                    tasks = viewModel.tasks.getFirstHalf(),
                     eventHandler = eventHandler
                 )
 
                 TaskListColumn(
                     size = size,
-                    tasks = vm.tasks.getSecondHalf(),
+                    tasks = viewModel.tasks.getSecondHalf(),
                     eventHandler = eventHandler
                 )
             }

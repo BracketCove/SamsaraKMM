@@ -9,7 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.samsarakmm.android.R
 import com.example.samsarakmm.android.ui.components.AppToolbar
+import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
 import com.example.samsarakmm.android.ui.hourBlockText
 import com.example.samsarakmm.android.ui.quarterHourBlockText
@@ -27,6 +28,32 @@ import com.example.samsarakmm.android.ui.ui.dayview.LIST_ITEM_BLOCK_TYPE
 
 @Composable
 fun DayViewScreen(
+    eventHandler: (DayViewEvent) -> Unit,
+    viewModel: DayViewModel
+) {
+
+    var showLoading by remember {
+        mutableStateOf(
+            true
+        )
+    }
+
+    viewModel.subIsLoading = {
+        showLoading = it
+    }
+
+    if (showLoading) {
+        LoadingScreen()
+    } else {
+        DayViewContent(
+            eventHandler = eventHandler,
+            viewModel = viewModel
+        )
+    }
+}
+
+@Composable
+fun DayViewContent(
     eventHandler: (DayViewEvent) -> Unit,
     viewModel: DayViewModel
 ) {
@@ -41,6 +68,8 @@ fun DayViewScreen(
             eventHandler,
             viewModel
         )
+
+
     }
 }
 

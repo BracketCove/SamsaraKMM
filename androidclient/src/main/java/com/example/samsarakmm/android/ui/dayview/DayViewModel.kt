@@ -1,5 +1,6 @@
 package com.example.samsarakmm.android.ui.dayview
 
+import com.example.samsarakmm.common.BaseViewModel
 import com.example.samsarakmm.domain.Day
 import com.example.samsarakmm.domain.Tasks
 
@@ -13,7 +14,10 @@ import com.example.samsarakmm.domain.Tasks
  * I use ViewModels like the name implies: it stores models necessary to render the View, so that
  * I do not need to reload them every time.
  */
-class DayViewModel : IDayViewContract.ViewModel {
-    override lateinit var day: Day
-    override lateinit var tasks: Tasks
+class DayViewModel: BaseViewModel() {
+    lateinit var day: Day
+    lateinit var tasks: Tasks
+
+    var subDay: ((Day) -> Unit)? = null
+    var subTasks: ((Day) -> Unit)? = null
 }

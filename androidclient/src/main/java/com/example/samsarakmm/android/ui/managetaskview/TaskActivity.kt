@@ -44,7 +44,7 @@ class TaskActivity : AppCompatActivity(), ITaskViewContract.Container {
             SamsaraTheme {
                 TaskScreen(
                     viewModel = viewModel,
-                    onEvent = logic::onViewEvent
+                    eventHandler = logic::onViewEvent
                 )
             }
         }

@@ -1,17 +1,34 @@
 package com.example.samsarakmm.android.ui.managehourview
 
 import com.example.samsarakmm.common.BaseViewLogic
-import com.example.samsarakmm.domain.*
+import com.example.samsarakmm.common.DispatcherProvider
+import com.example.samsarakmm.domain.Hour
+import com.example.samsarakmm.domain.QuarterHour
+import com.example.samsarakmm.domain.Tasks
 import com.example.samsarakmm.domain.constants.HOUR_MODE
 import com.example.samsarakmm.domain.constants.Messages.GENERIC_ERROR_MESSAGE
 import com.example.samsarakmm.domain.constants.QUARTER
+import com.example.samsarakmm.storage.IStorageService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class HourViewLogic(
     private val container: IHourContract.Container,
     private val vm: HourViewModel,
-    private val dayStorage: IDayStorage,
-    private val taskStorage: ITaskStorage
-) : BaseViewLogic<HourViewEvent>() {
+    private val storage: IStorageService,
+    private val dispatcher: DispatcherProvider
+) : BaseViewLogic<HourViewEvent>(), CoroutineScope {
+
+    init {
+        //allows cancellation
+        jobTracker = Job()
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() = dispatcher.provideUIContext() + jobTracker
+
     override fun onViewEvent(event: HourViewEvent) {
         when (event) {
             is HourViewEvent.OnStart -> onStart()
@@ -39,14 +56,29 @@ class HourViewLogic(
         }
     }
 
-    private fun onDone() {
-        dayStorage.updateHour(
+    private fun onDone() = launch {
+        storage.updateHour(
             Hour(
                 arrayOf(
                     QuarterHour(
                         vm.firstSelectedTask,
                         QUARTER.ZERO,
                         true
+                    ),
+                    QuarterHour(
+                        vm.secondSelectedTask,
+                        QUARTER.FIFTEEN,
+                        vm.secondIsActive
+                    ),
+                    QuarterHour(
+                        vm.thirdSelectedTask,
+                        QUARTER.THIRTY,
+                        vm.thirdIsActive
+                    ),
+                    QuarterHour(
+                        vm.fourthSelectedTask,
+                        QUARTER.FOURTY_FIVE,
+                        vm.fourthIsActive
                     )
                 ),
                 vm.hourInt
@@ -61,11 +93,11 @@ class HourViewLogic(
         )
     }
 
-    private fun onStart() {
+    private fun onStart() = launch {
         //I give the VM the hour integer and fake data for the rest of the hour, and then
         //grab it from
         val hour = vm.hourInt
-        dayStorage.getHourWithMode(
+        storage.getHourWithMode(
             hour,
             { hour, mode ->
                 onHourRetrieved(hour, mode)
@@ -77,9 +109,9 @@ class HourViewLogic(
         )
     }
 
-    private fun onHourRetrieved(hour: Hour, mode: HOUR_MODE) {
+    private fun onHourRetrieved(hour: Hour, mode: HOUR_MODE) = launch {
         vm.hourMode = mode
-        taskStorage.getTasks(
+        storage.getTasks(
             { tasks ->
                 onTasksRetrieved(
                     tasks,
@@ -113,6 +145,8 @@ class HourViewLogic(
         //:45
         vm.fourthIsActive = hour.quarters[3].isActive
         vm.fourthSelectedTask = hour.quarters[3].taskId
+
+        vm.isLoading = false
     }
 
 }

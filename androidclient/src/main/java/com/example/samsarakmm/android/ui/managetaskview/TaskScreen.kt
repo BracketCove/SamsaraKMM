@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.samsarakmm.android.R
 import com.example.samsarakmm.android.common.toResId
 import com.example.samsarakmm.android.ui.components.AppToolbar
+import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.android.ui.dropdownText
 import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
 import com.example.samsarakmm.android.ui.quarterHourBlockText
@@ -32,10 +33,36 @@ import com.example.samsarakmm.domain.constants.COLOR
 import com.example.samsarakmm.domain.constants.ICON
 import com.example.samsarakmm.domain.constants.ICON_NAMES
 
+
 @Composable
 fun TaskScreen(
     viewModel: TaskViewModel,
-    onEvent: (TaskViewEvent) -> Unit
+    eventHandler: (TaskViewEvent) -> Unit
+) {
+    var showLoading by remember {
+        mutableStateOf(
+            true
+        )
+    }
+
+    viewModel.subIsLoading = {
+        showLoading = it
+    }
+
+    if (showLoading) {
+        LoadingScreen()
+    } else {
+        TaskViewContent(
+            eventHandler = eventHandler,
+            viewModel = viewModel
+        )
+    }
+}
+
+@Composable
+fun TaskViewContent(
+    viewModel: TaskViewModel,
+    eventHandler: (TaskViewEvent) -> Unit
 ) {
     Column(
         Modifier.background(
@@ -46,7 +73,7 @@ fun TaskScreen(
         AppToolbar(
             modifier = Modifier,
             title = stringResource(id = R.string.manage_task),
-            iconAction = { TaskDoneIcon(onEvent) }
+            iconAction = { TaskDoneIcon(eventHandler) }
         )
 
         Spacer(Modifier.height(16.dp))
@@ -59,7 +86,7 @@ fun TaskScreen(
             name = newName
         }
 
-        NameField(value = name, onEvent = onEvent)
+        NameField(value = name, eventHandler = eventHandler)
 
         Spacer(Modifier.height(16.dp))
 
@@ -72,7 +99,7 @@ fun TaskScreen(
         }
 
         TaskDropdown(
-            onEvent = onEvent,
+            eventHandler = eventHandler,
             selectedIcon = icon,
             icons = ICON.values().toList(),
             names = ICON_NAMES
@@ -82,7 +109,7 @@ fun TaskScreen(
 
         //color display
         var color by remember {
-            mutableStateOf(COLOR.BROWN)
+            mutableStateOf(viewModel.getColor())
         }
 
         viewModel.subColor = { newColor ->
@@ -96,7 +123,7 @@ fun TaskScreen(
         Spacer(Modifier.height(32.dp))
 
         ColorPicker(
-            onEvent,
+            eventHandler,
             Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -108,7 +135,7 @@ fun TaskScreen(
 @Composable
 fun NameField(
     value: String,
-    onEvent: (TaskViewEvent) -> Unit
+    eventHandler: (TaskViewEvent) -> Unit
 ) {
     OutlinedTextField(
         modifier = Modifier
@@ -116,7 +143,7 @@ fun NameField(
             .padding(start = 32.dp, end = 32.dp),
         value = value,
         onValueChange = { newText ->
-            if (newText.length < 25) onEvent(TaskViewEvent.OnNameChanged(newText))
+            if (newText.length < 25) eventHandler(TaskViewEvent.OnNameChanged(newText))
         },
         label = {
             Text(
@@ -131,7 +158,7 @@ fun NameField(
 
 @Composable
 fun ColorPicker(
-    onEvent: (TaskViewEvent) -> Unit,
+    eventHandler: (TaskViewEvent) -> Unit,
     modifier: Modifier
 ) {
     BoxWithConstraints(modifier) {
@@ -143,9 +170,9 @@ fun ColorPicker(
                     .fillMaxWidth()
                     .height(size)
             ) {
-                ColorPickerButton(COLOR.DARK_BLUE, size, onEvent)
-                ColorPickerButton(COLOR.BURNT_ORANGE, size, onEvent)
-                ColorPickerButton(COLOR.GREEN, size, onEvent)
+                ColorPickerButton(COLOR.DARK_BLUE, size, eventHandler)
+                ColorPickerButton(COLOR.BURNT_ORANGE, size, eventHandler)
+                ColorPickerButton(COLOR.GREEN, size, eventHandler)
             }
 
             Row(
@@ -153,9 +180,9 @@ fun ColorPicker(
                     .fillMaxWidth()
                     .height(size)
             ) {
-                ColorPickerButton(COLOR.DARK_RED, size, onEvent)
-                ColorPickerButton(COLOR.DARK_LIME, size, onEvent)
-                ColorPickerButton(COLOR.LIGHT_BLUE, size, onEvent)
+                ColorPickerButton(COLOR.DARK_RED, size, eventHandler)
+                ColorPickerButton(COLOR.DARK_LIME, size, eventHandler)
+                ColorPickerButton(COLOR.LIGHT_BLUE, size, eventHandler)
             }
 
             Row(
@@ -163,9 +190,9 @@ fun ColorPicker(
                     .fillMaxWidth()
                     .height(size)
             ) {
-                ColorPickerButton(COLOR.MAUVE, size, onEvent)
-                ColorPickerButton(COLOR.BROWN, size, onEvent)
-                ColorPickerButton(COLOR.TEAL, size, onEvent)
+                ColorPickerButton(COLOR.MAUVE, size, eventHandler)
+                ColorPickerButton(COLOR.BROWN, size, eventHandler)
+                ColorPickerButton(COLOR.TEAL, size, eventHandler)
             }
         }
     }
@@ -175,13 +202,13 @@ fun ColorPicker(
 fun ColorPickerButton(
     color: COLOR,
     size: Dp,
-    onEvent: (TaskViewEvent) -> Unit
+    eventHandler: (TaskViewEvent) -> Unit
 ) {
     Button(
         modifier = Modifier
             .size(size)
             .padding(24.dp),
-        onClick = { onEvent(TaskViewEvent.OnColorSelected(color)) },
+        onClick = { eventHandler(TaskViewEvent.OnColorSelected(color)) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colorResource(id = color.toResId())
         ),
@@ -227,7 +254,7 @@ fun ColorDisplay(
  */
 @Composable
 fun TaskDropdown(
-    onEvent: (TaskViewEvent) -> Unit,
+    eventHandler: (TaskViewEvent) -> Unit,
     selectedIcon: ICON,
     icons: List<ICON>,
     names: List<String>
@@ -296,7 +323,7 @@ fun TaskDropdown(
                         onClick = {
                             menuIndex = index
                             showMenu = false
-                            onEvent.invoke(
+                            eventHandler.invoke(
                                 TaskViewEvent.OnIconSelected(
                                     icons[index]
                                 )

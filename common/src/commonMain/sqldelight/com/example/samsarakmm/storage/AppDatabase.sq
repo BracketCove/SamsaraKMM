@@ -1,40 +1,74 @@
-CREATE TABLE Launch (
-    flightNumber INTEGER NOT NULL,
-    missionName TEXT NOT NULL,
-    launchYear INTEGER AS Int NOT NULL DEFAULT 0,
-    rocketId TEXT NOT NULL,
-    details TEXT,
-    launchSuccess INTEGER AS Boolean DEFAULT NULL,
-    launchDateUTC TEXT NOT NULL,
-    missionPatchUrl TEXT,
-    articleUrl TEXT
+import com.example.samsarakmm.domain.constants.COLOR;
+import com.example.samsarakmm.domain.constants.ICON;
+
+
+
+CREATE TABLE UserTask (
+    taskId INTEGER AS Int NOT NULL PRIMARY KEY,
+    taskName TEXT NOT NULL,
+    icon TEXT AS ICON NOT NULL,
+    color TEXT AS COLOR NOT NULL
 );
 
-CREATE TABLE Rocket (
-    id TEXT NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
-    type TEXT NOT NULL
+CREATE TABLE HourOfDay (
+    hourInteger INTEGER AS Int NOT NULL PRIMARY KEY,
+
+    firstQuarterTaskId INTEGER AS Int NOT NULL,
+    firstQuarterIsActive INTEGER AS Boolean NOT NULL,
+
+    secondQuarterTaskId INTEGER AS Int NOT NULL,
+    secondQuarterIsActive INTEGER AS Boolean NOT NULL,
+
+    thirdQuarterTaskId INTEGER AS Int NOT NULL,
+    thirdQuarterIsActive INTEGER AS Boolean NOT NULL,
+
+    fourthQuarterTaskId INTEGER AS Int NOT NULL,
+    fourthQuarterIsActive INTEGER AS Boolean NOT NULL
 );
 
-insertLaunch:
-INSERT INTO Launch(flightNumber, missionName, launchYear, rocketId, details, launchSuccess, launchDateUTC, missionPatchUrl, articleUrl)
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
 
-insertRocket:
-INSERT INTO Rocket(id, name, type)
-VALUES(?, ?, ?);
+updateTask:
+UPDATE UserTask
+SET taskName = ?, icon = ?, color = ?
+WHERE taskId = ?;
 
-removeAllLaunches:
-DELETE FROM Launch;
+updateHour:
+UPDATE HourOfDay
+SET
+firstQuarterTaskId = ?, firstQuarterIsActive = ?,
+secondQuarterTaskId = ?, secondQuarterIsActive = ?,
+thirdQuarterTaskId = ?, thirdQuarterIsActive = ?,
+fourthQuarterTaskId = ?, fourthQuarterIsActive = ?
+WHERE hourInteger = ?;
 
-removeAllRockets:
-DELETE FROM Rocket;
+insertTask:
+INSERT INTO UserTask(taskId, taskName, icon, color)
+VALUES(?, ?, ?, ?);
 
-selectRocketById:
-SELECT * FROM Rocket
-WHERE id = ?;
+insertHour:
+INSERT INTO HourOfDay(
+hourInteger,
+firstQuarterTaskId,
+firstQuarterIsActive,
+secondQuarterTaskId,
+secondQuarterIsActive,
+thirdQuarterTaskId,
+thirdQuarterIsActive,
+fourthQuarterTaskId,
+fourthQuarterIsActive)
+VALUES(?, ?, ?,?,?,?,?,?,?);
 
-selectAllLaunchesInfo:
-SELECT Launch.*, Rocket.*
-FROM Launch
-LEFT JOIN Rocket ON Rocket.id == Launch.rocketId;
+selectTasks:
+SELECT * FROM UserTask;
+
+selectTaskById:
+SELECT * FROM UserTask
+WHERE taskId = ?;
+
+selectHoursOfDay:
+SELECT * FROM HourOfDay;
+
+selectHourByInteger:
+SELECT * FROM HourOfDay
+WHERE hourInteger = ?;
+

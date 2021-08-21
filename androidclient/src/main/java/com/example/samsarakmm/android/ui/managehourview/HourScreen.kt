@@ -20,15 +20,40 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.samsarakmm.android.R
 import com.example.samsarakmm.android.common.getHourToggleViewFormattedText
 import com.example.samsarakmm.android.ui.components.AppToolbar
+import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.android.ui.dropdownText
 import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
 import com.example.samsarakmm.domain.constants.QUARTER
 
 
 @Composable
-fun HourScreen(
+fun HourScreen(viewModel: HourViewModel,
+               eventHandler: (HourViewEvent) -> Unit) {
+
+    var showLoading by remember {
+        mutableStateOf(
+            true
+        )
+    }
+
+    viewModel.subIsLoading = {
+        showLoading = it
+    }
+
+    if (showLoading) {
+        LoadingScreen()
+    } else {
+        HourViewContent(
+            eventHandler = eventHandler,
+            viewModel = viewModel
+        )
+    }
+}
+
+@Composable
+fun HourViewContent(
     viewModel: HourViewModel,
-    onEvent: (HourViewEvent) -> Unit
+    eventHandler: (HourViewEvent) -> Unit
 ) {
     Column(
         Modifier
@@ -38,123 +63,154 @@ fun HourScreen(
         AppToolbar(
             modifier = Modifier,
             title = stringResource(id = R.string.manage_hour),
-            iconAction = { HourDoneIcon(eventHandler = onEvent) }
+            iconAction = { HourDoneIcon(eventHandler = eventHandler) }
         )
 
-        //first
-        var firstTaskIndex by remember {
-            mutableStateOf(viewModel.firstSelectedTask)
-        }
-
-        viewModel.subFirstSelectedTaskIndex = { newIndex ->
-            firstTaskIndex = newIndex
-        }
-
-        QuarterHourBlock(
-            active = true,
-            selectedTask = firstTaskIndex,
-            timeText = getHourToggleViewFormattedText(
-                QUARTER.ZERO,
-                viewModel.hourInt,
-                viewModel.hourMode
-            ),
-            taskNames = viewModel.taskNames,
-            quarter = QUARTER.ZERO,
-            onEvent = onEvent,
-            showToggle = false
-        )
-
-        //second
-        var secondTaskIndex by remember {
-            mutableStateOf(viewModel.secondSelectedTask)
-        }
-
-        viewModel.subSecondSelectedTaskIndex = { newIndex ->
-            secondTaskIndex = newIndex
-        }
-
-        var secondIsActive by remember {
-            mutableStateOf(viewModel.secondIsActive)
-        }
-
-        viewModel.subSecondIsActive = { isActive ->
-            secondIsActive = isActive
-        }
-
-        QuarterHourBlock(
-            active = secondIsActive,
-            selectedTask = secondTaskIndex,
-            timeText = getHourToggleViewFormattedText(
-                QUARTER.FIFTEEN,
-                viewModel.hourInt,
-                viewModel.hourMode
-            ),
-            taskNames = viewModel.taskNames,
-            quarter = QUARTER.FIFTEEN,
-            onEvent = onEvent
-        )
-
-        //third
-        var thirdTaskIndex by remember {
-            mutableStateOf(viewModel.thirdSelectedTask)
-        }
-
-        viewModel.subThirdSelectedTaskIndex = { newIndex ->
-            thirdTaskIndex = newIndex
-        }
-
-        var thirdIsActive by remember {
-            mutableStateOf(viewModel.thirdIsActive)
-        }
-
-        viewModel.subThirdIsActive = { isActive ->
-            thirdIsActive = isActive
-        }
-
-        QuarterHourBlock(
-            active = thirdIsActive,
-            selectedTask = thirdTaskIndex,
-            timeText = getHourToggleViewFormattedText(
-                QUARTER.THIRTY,
-                viewModel.hourInt,
-                viewModel.hourMode
-            ),
-            taskNames = viewModel.taskNames,
-            quarter = QUARTER.THIRTY,
-            onEvent = onEvent
-        )
-
-        //fourth
-        var fourthTaskIndex by remember {
-            mutableStateOf(viewModel.fourthSelectedTask)
-        }
-
-        viewModel.subFourthSelectedTaskIndex = { newIndex ->
-            fourthTaskIndex = newIndex
-        }
-
-        var fourthIsActive by remember {
-            mutableStateOf(viewModel.fourthIsActive)
-        }
-
-        viewModel.subFourthIsActive = { isActive ->
-            fourthIsActive = isActive
-        }
-
-        QuarterHourBlock(
-            active = fourthIsActive,
-            selectedTask = fourthTaskIndex,
-            timeText = getHourToggleViewFormattedText(
-                QUARTER.FOURTY_FIVE,
-                viewModel.hourInt,
-                viewModel.hourMode
-            ),
-            taskNames = viewModel.taskNames,
-            quarter = QUARTER.FOURTY_FIVE,
-            onEvent = onEvent,
-            showBottomDivider = false
-        )
+        //TODO: I'm pretty sure I should rig up a list of subscriber functions in the
+        // ViewModel and then abstract them out of the Quarters
+        FirstQuarter(viewModel = viewModel, eventHandler = eventHandler)
+        SecondQuarter(viewModel = viewModel, eventHandler = eventHandler)
+        ThirdQuarter(viewModel = viewModel, eventHandler = eventHandler)
+        FourthQuarter(viewModel = viewModel, eventHandler = eventHandler)
     }
+}
+
+
+@Composable
+fun FirstQuarter(
+    viewModel: HourViewModel,
+    eventHandler: (HourViewEvent) -> Unit
+) {
+    var firstTaskIndex by remember {
+        mutableStateOf(viewModel.firstSelectedTask)
+    }
+
+    viewModel.subFirstSelectedTaskIndex = { newIndex ->
+        firstTaskIndex = newIndex
+    }
+
+    QuarterHourBlock(
+        active = true,
+        selectedTask = firstTaskIndex,
+        timeText = getHourToggleViewFormattedText(
+            QUARTER.ZERO,
+            viewModel.hourInt,
+            viewModel.hourMode
+        ),
+        taskNames = viewModel.taskNames,
+        quarter = QUARTER.ZERO,
+        eventHandler = eventHandler,
+        showToggle = false
+    )
+}
+
+@Composable
+fun SecondQuarter(
+    viewModel: HourViewModel,
+    eventHandler: (HourViewEvent) -> Unit
+) {
+    //second
+    var secondTaskIndex by remember {
+        mutableStateOf(viewModel.secondSelectedTask)
+    }
+
+    viewModel.subSecondSelectedTaskIndex = { newIndex ->
+        secondTaskIndex = newIndex
+    }
+
+    var secondIsActive by remember {
+        mutableStateOf(viewModel.secondIsActive)
+    }
+
+    viewModel.subSecondIsActive = { isActive ->
+        secondIsActive = isActive
+    }
+
+    QuarterHourBlock(
+        active = secondIsActive,
+        selectedTask = secondTaskIndex,
+        timeText = getHourToggleViewFormattedText(
+            QUARTER.FIFTEEN,
+            viewModel.hourInt,
+            viewModel.hourMode
+        ),
+        taskNames = viewModel.taskNames,
+        quarter = QUARTER.FIFTEEN,
+        eventHandler = eventHandler
+    )
+}
+
+@Composable
+fun ThirdQuarter(
+    viewModel: HourViewModel,
+    eventHandler: (HourViewEvent) -> Unit
+) {
+//third
+    var thirdTaskIndex by remember {
+        mutableStateOf(viewModel.thirdSelectedTask)
+    }
+
+    viewModel.subThirdSelectedTaskIndex = { newIndex ->
+        thirdTaskIndex = newIndex
+    }
+
+    var thirdIsActive by remember {
+        mutableStateOf(viewModel.thirdIsActive)
+    }
+
+    viewModel.subThirdIsActive = { isActive ->
+        thirdIsActive = isActive
+    }
+
+    QuarterHourBlock(
+        active = thirdIsActive,
+        selectedTask = thirdTaskIndex,
+        timeText = getHourToggleViewFormattedText(
+            QUARTER.THIRTY,
+            viewModel.hourInt,
+            viewModel.hourMode
+        ),
+        taskNames = viewModel.taskNames,
+        quarter = QUARTER.THIRTY,
+        eventHandler = eventHandler
+    )
+
+}
+
+@Composable
+fun FourthQuarter(
+    viewModel: HourViewModel,
+    eventHandler: (HourViewEvent) -> Unit
+) {
+    var fourthTaskIndex by remember {
+        mutableStateOf(viewModel.fourthSelectedTask)
+    }
+
+    viewModel.subFourthSelectedTaskIndex = { newIndex ->
+        fourthTaskIndex = newIndex
+    }
+
+    var fourthIsActive by remember {
+        mutableStateOf(viewModel.fourthIsActive)
+    }
+
+    viewModel.subFourthIsActive = { isActive ->
+        fourthIsActive = isActive
+    }
+
+    QuarterHourBlock(
+        active = fourthIsActive,
+        selectedTask = fourthTaskIndex,
+        timeText = getHourToggleViewFormattedText(
+            QUARTER.FOURTY_FIVE,
+            viewModel.hourInt,
+            viewModel.hourMode
+        ),
+        taskNames = viewModel.taskNames,
+        quarter = QUARTER.FOURTY_FIVE,
+        eventHandler = eventHandler,
+        showBottomDivider = false
+    )
 }
 
 @Composable
@@ -166,7 +222,7 @@ fun QuarterHourBlock(
     showBottomDivider: Boolean = true,
     showToggle: Boolean = true,
     quarter: QUARTER,
-    onEvent: (HourViewEvent) -> Unit
+    eventHandler: (HourViewEvent) -> Unit
 ) {
     ConstraintLayout(
         Modifier
@@ -207,7 +263,7 @@ fun QuarterHourBlock(
             },
             checked = active,
             onCheckedChange = {
-                onEvent(
+                eventHandler(
                     HourViewEvent.OnQuarterToggled(
                         quarter,
                         it
@@ -229,7 +285,7 @@ fun QuarterHourBlock(
                     start.linkTo(parent.start)
                 }
                 .wrapContentWidth(),
-            onEvent = onEvent,
+            eventHandler = eventHandler,
             selectedTask = selectedTask,
             taskNames = taskNames,
             quarter = quarter
@@ -264,7 +320,7 @@ fun QuarterHourBlock(
 @Composable
 fun HourDropdown(
     modifier: Modifier,
-    onEvent: (HourViewEvent) -> Unit,
+    eventHandler: (HourViewEvent) -> Unit,
     selectedTask: Int,
     taskNames: List<String>,
     quarter: QUARTER
@@ -318,7 +374,7 @@ fun HourDropdown(
                         onClick = {
                             menuIndex = index
                             showMenu = false
-                            onEvent.invoke(
+                            eventHandler.invoke(
                                 HourViewEvent.OnTaskSelected(
                                     quarter,
                                     index
