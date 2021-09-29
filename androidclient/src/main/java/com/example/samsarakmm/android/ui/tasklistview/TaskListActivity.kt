@@ -12,6 +12,9 @@ import com.example.samsarakmm.android.ui.managetaskview.TaskActivity
 import com.example.samsarakmm.android.ui.tasklistview.buildlogic.buildLogic
 import com.example.samsarakmm.common.BaseViewLogic
 import com.example.samsarakmm.domain.constants.Extras
+import com.example.samsarakmm.ui.tasklistview.ITaskListViewContract
+import com.example.samsarakmm.ui.tasklistview.TaskListViewEvent
+import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
 
 class TaskListActivity : AppCompatActivity(), ITaskListViewContract.Container {
 

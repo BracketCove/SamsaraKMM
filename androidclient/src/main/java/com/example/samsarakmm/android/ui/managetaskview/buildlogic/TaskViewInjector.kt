@@ -2,11 +2,11 @@ package com.example.samsarakmm.android.ui.managetaskview.buildlogic
 
 import com.example.samsarakmm.android.StorageServiceLocator
 import com.example.samsarakmm.android.ui.managetaskview.TaskActivity
-import com.example.samsarakmm.android.ui.managetaskview.TaskViewEvent
-import com.example.samsarakmm.android.ui.managetaskview.TaskViewLogic
-import com.example.samsarakmm.android.ui.managetaskview.TaskViewModel
+import com.example.samsarakmm.ui.managetaskview.TaskViewEvent
+import com.example.samsarakmm.ui.managetaskview.TaskViewLogic
+import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 import com.example.samsarakmm.common.BaseViewLogic
-import com.example.samsarakmm.common.ProductionDispatcherProvider
+import com.example.samsarakmm.common.DispatcherProvider
 
 internal fun TaskActivity.buildLogic(
     vm: TaskViewModel,
@@ -18,6 +18,6 @@ internal fun TaskActivity.buildLogic(
         this,
         vm,
         locator.storage,
-        ProductionDispatcherProvider()
+        DispatcherProvider()
     )
 }
