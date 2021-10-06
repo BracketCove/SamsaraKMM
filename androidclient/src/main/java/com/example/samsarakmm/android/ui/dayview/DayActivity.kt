@@ -11,7 +11,7 @@ import com.example.samsarakmm.android.ui.dayview.buildlogic.buildLogic
 import com.example.samsarakmm.android.ui.managehourview.HourActivity
 import com.example.samsarakmm.android.ui.tasklistview.TaskListActivity
 import com.example.samsarakmm.common.BaseViewLogic
-import com.example.samsarakmm.domain.constants.Extras
+import com.example.samsarakmm.common.domain.constants.Extras
 import com.example.samsarakmm.ui.dayview.DayViewEvent
 import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.ui.dayview.IDayViewContract

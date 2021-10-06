@@ -1,9 +1,9 @@
 package com.example.samsarakmm.android
 
 import android.content.Context
-import com.example.samsarakmm.storage.DatabaseDriverFactory
-import com.example.samsarakmm.storage.StorageService
-import com.example.samsarakmm.storage.IStorageService
+import com.example.samsarakmm.common.IStorageService
+import com.example.samsarakmm.common.database.DatabaseDriverFactory
+import com.example.samsarakmm.common.database.StorageService
 
 
 class StorageServiceLocator(context: Context) {

@@ -4,9 +4,9 @@ import androidx.annotation.IntegerRes
 import com.example.samsarakmm.android.common.toResId
 import com.example.samsarakmm.android.ui.ui.dayview.LIST_ITEM_BLOCK_TYPE
 import com.example.samsarakmm.android.ui.ui.dayview.LIST_ITEM_TYPE
-import com.example.samsarakmm.domain.Day
-import com.example.samsarakmm.domain.Hour
-import com.example.samsarakmm.domain.Tasks
+import com.example.samsarakmm.common.domain.Day
+import com.example.samsarakmm.common.domain.Hour
+import com.example.samsarakmm.common.domain.Tasks
 import getHourBlockText
 
 /**

@@ -11,8 +11,8 @@ import com.example.samsarakmm.android.ui.SamsaraTheme
 import com.example.samsarakmm.android.ui.dayview.DayActivity
 import com.example.samsarakmm.android.ui.managehourview.buildlogic.buildLogic
 import com.example.samsarakmm.common.BaseViewLogic
-import com.example.samsarakmm.domain.constants.Extras
-import com.example.samsarakmm.domain.constants.Messages.GENERIC_ERROR_MESSAGE
+import com.example.samsarakmm.common.domain.constants.Extras
+import com.example.samsarakmm.common.domain.constants.Messages.GENERIC_ERROR_MESSAGE
 import com.example.samsarakmm.ui.managehourview.HourViewEvent
 import com.example.samsarakmm.ui.managehourview.HourViewModel
 import com.example.samsarakmm.ui.managehourview.IHourContract

@@ -1,21 +1,33 @@
+import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform") // kotlin("jvm") doesn't work well in IDEA/AndroidStudio (https://github.com/JetBrains/compose-jb/issues/22)
     id("org.jetbrains.compose")
 }
 
+kotlin {
+    jvm {
+        withJava()
+    }
 
-dependencies {
-    implementation(project(":common"))
-    implementation(compose.desktop.currentOs)
+    sourceSets {
+        named("jvmMain") {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(project(":common:compose-ui"))
+                implementation(project(":common:database"))
+                implementation(project(":common:main"))
+                Deps.JetBrains.Kotlin.coroutinesCore
+                Deps.JetBrains.Kotlin.coroutinesJVM
+            }
+        }
+    }
 }
-
 
 compose.desktop {
     application {
-        mainClass = "com.example.samsara.desktop.MainKt"
+        mainClass = "com.example.samsarakmm.desktop.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
@@ -25,8 +37,7 @@ compose.desktop {
             modules("java.sql")
 
             windows {
-                menuGroup = "Compose Examples"
-                // see https://wixtoolset.org/documentation/manual/v3/howtos/general/generate_guids.html
+                menuGroup = "Samsara Day Planner"
                 upgradeUuid = "7f73d4cd-91bb-4ca1-9982-2ee6633ec43e"
             }
         }

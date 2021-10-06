@@ -22,7 +22,7 @@ import com.example.samsarakmm.android.ui.components.AppToolbar
 import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.android.ui.dropdownText
 import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
-import com.example.samsarakmm.domain.constants.QUARTER
+import com.example.samsarakmm.common.domain.constants.QUARTER
 import com.example.samsarakmm.ui.managehourview.HourViewEvent
 import com.example.samsarakmm.ui.managehourview.HourViewModel
 import getHourToggleViewFormattedText

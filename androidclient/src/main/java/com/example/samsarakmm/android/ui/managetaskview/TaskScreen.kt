@@ -29,9 +29,9 @@ import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.android.ui.dropdownText
 import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
 import com.example.samsarakmm.android.ui.quarterHourBlockText
-import com.example.samsarakmm.domain.constants.COLOR
-import com.example.samsarakmm.domain.constants.ICON
-import com.example.samsarakmm.domain.constants.ICON_NAMES
+import com.example.samsarakmm.common.domain.constants.COLOR
+import com.example.samsarakmm.common.domain.constants.ICON
+import com.example.samsarakmm.common.domain.constants.ICON_NAMES
 import com.example.samsarakmm.ui.managetaskview.TaskViewEvent
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 
