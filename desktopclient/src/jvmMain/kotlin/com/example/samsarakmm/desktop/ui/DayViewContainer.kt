@@ -10,8 +10,7 @@ import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.ui.dayview.IDayViewContract
 
 class DayViewContainer(
-    var windowState: WindowState,
-    var windowArgs: Int
+    val stateHandler: (WindowState, Int) -> Unit
 ) : IDayViewContract.Container {
 
     internal lateinit var logic : BaseViewLogic<DayViewEvent>
@@ -30,13 +29,11 @@ class DayViewContainer(
     }
 
     override fun navigateToHourView(hourInteger: Int) {
-        windowArgs = hourInteger
-        windowState = WindowState.VIEW_HOUR
+        stateHandler(WindowState.VIEW_HOUR, hourInteger)
     }
 
     override fun navigateToTasksView() {
-        windowArgs = 0
-        windowState = WindowState.VIEW_TASK_LIST
+        stateHandler(WindowState.VIEW_TASK_LIST, 0)
     }
 
     override fun showMessage(message: String) {

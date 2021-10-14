@@ -10,8 +10,7 @@ import com.example.samsarakmm.common.ui.managehourview.HourViewModel
 import com.example.samsarakmm.ui.managehourview.IHourContract
 
 class HourViewContainer(
-    var windowState: WindowState,
-    var windowArgs: Int
+    val stateHandler: (WindowState, Int) -> Unit
 ) : IHourContract.Container {
 
     internal lateinit var logic : BaseViewLogic<HourViewEvent>
@@ -29,11 +28,10 @@ class HourViewContainer(
         return this
     }
     override fun navigateToDayView() {
-        windowArgs = 0
-        windowState = WindowState.VIEW_DAY
+        stateHandler(WindowState.VIEW_DAY, 0)
     }
 
     override fun showMessage(message: String) {
-        TODO("Not yet implemented")
+        println(message)
     }
 }

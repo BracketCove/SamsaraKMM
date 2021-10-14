@@ -11,12 +11,14 @@ import com.example.samsarakmm.common.database.DatabaseDriverFactory
 import com.example.samsarakmm.common.database.StorageService
 import com.example.samsarakmm.common.ui.SamsaraTheme
 import com.example.samsarakmm.common.ui.dayview.DayViewScreen
+import com.example.samsarakmm.common.ui.managehourview.HourScreen
 import com.example.samsarakmm.desktop.ui.DayViewContainer
 import com.example.samsarakmm.desktop.ui.HourViewContainer
 import com.example.samsarakmm.desktop.ui.TaskListViewContainer
 import com.example.samsarakmm.desktop.ui.TaskViewContainer
 import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.common.ui.managehourview.HourViewModel
+import com.example.samsarakmm.common.ui.managetaskview.TaskScreen
 import com.example.samsarakmm.common.ui.tasklistview.TaskListScreen
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
@@ -47,8 +49,10 @@ fun main() = application {
                 WindowState.VIEW_DAY -> {
                     val vm = DayViewModel()
                     val container = buildDayFeature(
-                        windowState,
-                        windowArgs,
+                        { newState: WindowState, arg: Int ->
+                            windowState = newState
+                            windowArgs = arg
+                        },
                         vm,
                         storageService
                     )
@@ -61,8 +65,10 @@ fun main() = application {
                 WindowState.VIEW_TASK_LIST -> {
                     val vm = TaskListViewModel()
                     val container = buildTasksFeature(
-                        windowState,
-                        windowArgs,
+                        { newState: WindowState, arg: Int ->
+                            windowState = newState
+                            windowArgs = arg
+                        },
                         vm,
                         storageService
                     )
@@ -71,57 +77,85 @@ fun main() = application {
                         container.logic::onViewEvent
                     )
                 }
-                WindowState.VIEW_MANAGE_TASK -> TODO()
-                WindowState.VIEW_HOUR -> TODO()
+                WindowState.VIEW_MANAGE_TASK -> {
+                    val vm = TaskViewModel(windowArgs)
+                    val container = buildTaskFeature(
+                        { newState: WindowState, arg: Int ->
+                            windowState = newState
+                            windowArgs = arg
+                        },
+                        vm,
+                        storageService
+                    )
+                    TaskScreen(
+                        vm,
+                        container.logic::onViewEvent
+                    )
+                }
+                WindowState.VIEW_HOUR -> {
+                    val vm = HourViewModel(windowArgs)
+                    val container = buildHourFeature(
+                        { newState: WindowState, arg: Int ->
+                            windowState = newState
+                            windowArgs = arg
+                        },
+                        vm,
+                        storageService
+                    )
+                    HourScreen(
+                        vm,
+                        container.logic::onViewEvent
+                    )
+                }
             }
         }
 
     }
 }
 
-fun buildDayFeature(windowState: WindowState,
-                    windowArgs: Int,
-                    vm: DayViewModel,
-                    storageService: StorageService): DayViewContainer =
+fun buildDayFeature(
+    stateHandler: (WindowState, Int) -> Unit,
+    vm: DayViewModel,
+    storageService: StorageService
+): DayViewContainer =
     DayViewContainer(
-        windowState,
-        windowArgs
+        stateHandler
     ).start(
         storageService,
         vm
     )
 
-fun buildTaskFeature(windowState: WindowState,
-                     windowArgs: Int,
-                     vm: TaskViewModel,
-                     storageService: StorageService): TaskViewContainer =
+fun buildTaskFeature(
+    stateHandler: (WindowState, Int) -> Unit,
+    vm: TaskViewModel,
+    storageService: StorageService
+): TaskViewContainer =
     TaskViewContainer(
-        windowState,
-        windowArgs
+        stateHandler
     ).start(
         storageService,
         vm
     )
 
-fun buildTasksFeature(windowState: WindowState,
-                    windowArgs: Int,
-                    vm: TaskListViewModel,
-                    storageService: StorageService): TaskListViewContainer =
+fun buildTasksFeature(
+    stateHandler: (WindowState, Int) -> Unit,
+    vm: TaskListViewModel,
+    storageService: StorageService
+): TaskListViewContainer =
     TaskListViewContainer(
-        windowState,
-        windowArgs
+        stateHandler
     ).start(
         storageService,
         vm
     )
 
-fun buildHourFeature(windowState: WindowState,
-                     windowArgs: Int,
-                     vm: HourViewModel,
-                     storageService: StorageService): HourViewContainer =
+fun buildHourFeature(
+    stateHandler: (WindowState, Int) -> Unit,
+    vm: HourViewModel,
+    storageService: StorageService
+): HourViewContainer =
     HourViewContainer(
-        windowState,
-        windowArgs
+        stateHandler
     ).start(
         storageService,
         vm

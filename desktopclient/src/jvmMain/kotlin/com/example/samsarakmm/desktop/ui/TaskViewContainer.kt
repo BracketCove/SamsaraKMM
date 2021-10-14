@@ -10,8 +10,7 @@ import com.example.samsarakmm.ui.managetaskview.TaskViewEvent
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 
 class TaskViewContainer(
-    var windowState: WindowState,
-    var windowArgs: Int
+    val stateHandler: (WindowState, Int) -> Unit
 ) : ITaskViewContract.Container {
 
     internal lateinit var logic : BaseViewLogic<TaskViewEvent>
@@ -30,11 +29,11 @@ class TaskViewContainer(
     }
     
     override fun goToTaskListActivity() {
-        windowArgs = 0
-        windowState = WindowState.VIEW_TASK_LIST
+        stateHandler(WindowState.VIEW_TASK_LIST, 0)
     }
 
     override fun showMessage(message: String) {
-        TODO("Not yet implemented")
+        println(message)
+
     }
 }

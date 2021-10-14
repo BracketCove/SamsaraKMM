@@ -10,8 +10,7 @@ import com.example.samsarakmm.ui.tasklistview.TaskListViewEvent
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
 
 class TaskListViewContainer(
-    var windowState: WindowState,
-    var windowArgs: Int
+    val stateHandler: (WindowState, Int) -> Unit
 ) : ITaskListViewContract.Container {
     
     internal lateinit var logic : BaseViewLogic<TaskListViewEvent>
@@ -30,17 +29,15 @@ class TaskListViewContainer(
     }
     
     override fun showMessage(message: String) {
-        TODO("Not yet implemented")
+        println(message)
     }
 
     override fun navigateToDayView() {
-        windowArgs = 0
-        windowState = WindowState.VIEW_DAY
+        stateHandler(WindowState.VIEW_DAY, 0)
     }
 
     override fun navigateToTaskView(taskId: Int) {
-        windowArgs = taskId
-        windowState = WindowState.VIEW_MANAGE_TASK
+        stateHandler(WindowState.VIEW_MANAGE_TASK, taskId)
     }
 
 }
