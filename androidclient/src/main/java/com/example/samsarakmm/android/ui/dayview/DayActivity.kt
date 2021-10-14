@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.example.samsarakmm.android.SamsaraApp
 import com.example.samsarakmm.android.common.showToast
-import com.example.samsarakmm.android.ui.SamsaraTheme
 import com.example.samsarakmm.android.ui.dayview.buildlogic.buildLogic
 import com.example.samsarakmm.android.ui.managehourview.HourActivity
 import com.example.samsarakmm.android.ui.tasklistview.TaskListActivity
 import com.example.samsarakmm.common.BaseViewLogic
 import com.example.samsarakmm.common.domain.constants.Extras
+import com.example.samsarakmm.common.ui.SamsaraTheme
+import com.example.samsarakmm.common.ui.dayview.DayViewScreen
 import com.example.samsarakmm.ui.dayview.DayViewEvent
 import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.ui.dayview.IDayViewContract
@@ -35,8 +35,7 @@ class DayActivity : AppCompatActivity(), IDayViewContract.Container {
         }
 
         logic = buildLogic(
-            viewModel,
-            (application as SamsaraApp).serviceLocator
+            viewModel
         )
     }
 

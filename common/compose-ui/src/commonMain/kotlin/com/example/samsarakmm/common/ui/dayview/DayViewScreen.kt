@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui.dayview
+package com.example.samsarakmm.common.ui.dayview
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -9,22 +9,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.samsarakmm.android.R
-import com.example.samsarakmm.android.ui.components.AppToolbar
-import com.example.samsarakmm.android.ui.components.LoadingScreen
-import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
-import com.example.samsarakmm.android.ui.hourBlockText
-import com.example.samsarakmm.android.ui.quarterHourBlockText
-import com.example.samsarakmm.android.ui.ui.dayview.LIST_ITEM_BLOCK_TYPE
+import com.example.samsarakmm.common.ui.*
+import com.example.samsarakmm.common.ui.components.AppToolbar
+import com.example.samsarakmm.common.ui.components.LoadingScreen
 import com.example.samsarakmm.ui.dayview.DayViewEvent
 import com.example.samsarakmm.ui.dayview.DayViewModel
 
@@ -33,7 +29,6 @@ fun DayViewScreen(
     eventHandler: (DayViewEvent) -> Unit,
     viewModel: DayViewModel
 ) {
-
     var showLoading by remember {
         mutableStateOf(
             true
@@ -62,7 +57,7 @@ fun DayViewContent(
     Column {
         AppToolbar(
             modifier = Modifier,
-            title = stringResource(id = R.string.tasks),
+            title = "Tasks",
             iconAction = { DayViewIconTasks(eventHandler = eventHandler) }
         )
 
@@ -79,8 +74,9 @@ fun DayViewContent(
 fun DayViewIconTasks(
     eventHandler: (DayViewEvent) -> Unit
 ) {
+
     Icon(
-        painterResource(id = R.drawable.ic_list_white_24dp),
+        imageVector = Icons.Default.FormatListBulleted,
         modifier = Modifier
             .clickable(onClick = { eventHandler.invoke(DayViewEvent.OnManageTasksSelected) })
             .padding(horizontal = 16.dp, vertical = 16.dp)
@@ -180,26 +176,26 @@ fun DayListTaskBlock(
         listItemModel.types.forEachIndexed { index, type ->
             when (type) {
                 LIST_ITEM_BLOCK_TYPE.BLOCK_HOUR -> HourTaskBlock(
-                    taskIcon = listItemModel.iconResId[index],
-                    taskBackground = listItemModel.backgroundResId[index],
+                    taskIcon = listItemModel.icons[index],
+                    taskBackground = listItemModel.backgrounds[index],
                     taskName = listItemModel.taskNames[index]
                 )
                 LIST_ITEM_BLOCK_TYPE.BLOCK_THREE_QUARTER -> {
                     ThreeQuarterTaskBlock(
-                        taskIcon = listItemModel.iconResId[index],
-                        taskBackground = listItemModel.backgroundResId[index],
+                        taskIcon = listItemModel.icons[index],
+                        taskBackground = listItemModel.backgrounds[index],
                         taskName = listItemModel.taskNames[index]
                     )
 
                 }
                 LIST_ITEM_BLOCK_TYPE.BLOCK_HALF -> HalfHourTaskBlock(
-                    taskIcon = listItemModel.iconResId[index],
-                    taskBackground = listItemModel.backgroundResId[index],
+                    taskIcon = listItemModel.icons[index],
+                    taskBackground = listItemModel.backgrounds[index],
                     taskName = listItemModel.taskNames[index]
                 )
                 LIST_ITEM_BLOCK_TYPE.BLOCK_QUARTER -> QuarterHourTaskBlock(
-                    taskIcon = listItemModel.iconResId[index],
-                    taskBackground = listItemModel.backgroundResId[index],
+                    taskIcon = listItemModel.icons[index],
+                    taskBackground = listItemModel.backgrounds[index],
                     taskName = listItemModel.taskNames[index]
                 )
             }
@@ -213,8 +209,8 @@ private val BLOCK_ICON_PADDING_START = 8.dp
 
 @Composable
 fun QuarterHourTaskBlock(
-    taskIcon: Int,
-    taskBackground: Int,
+    taskIcon: ImageVector,
+    taskBackground: Color,
     taskName: String
 ) {
     Box(
@@ -222,7 +218,7 @@ fun QuarterHourTaskBlock(
             .fillMaxWidth()
             .height(21.dp)
             .background(
-                colorResource(id = taskBackground),
+                taskBackground,
                 shape = RoundedCornerShape(4.dp)
             )
     ) {
@@ -247,8 +243,8 @@ fun QuarterHourTaskBlock(
 
 @Composable
 fun HalfHourTaskBlock(
-    taskIcon: Int,
-    taskBackground: Int,
+    taskIcon: ImageVector,
+    taskBackground: Color,
     taskName: String
 ) {
     Box(
@@ -256,7 +252,7 @@ fun HalfHourTaskBlock(
             .fillMaxWidth()
             .height(43.dp)
             .background(
-                colorResource(id = taskBackground),
+                taskBackground,
                 shape = RoundedCornerShape(4.dp)
             )
     ) {
@@ -281,8 +277,8 @@ fun HalfHourTaskBlock(
 
 @Composable
 fun ThreeQuarterTaskBlock(
-    taskIcon: Int,
-    taskBackground: Int,
+    taskIcon: ImageVector,
+    taskBackground: Color,
     taskName: String
 ) {
     Box(
@@ -290,7 +286,7 @@ fun ThreeQuarterTaskBlock(
             .fillMaxWidth()
             .height(65.dp)
             .background(
-                colorResource(id = taskBackground),
+                taskBackground,
                 shape = RoundedCornerShape(4.dp)
             )
     ) {
@@ -315,8 +311,8 @@ fun ThreeQuarterTaskBlock(
 
 @Composable
 fun HourTaskBlock(
-    taskIcon: Int,
-    taskBackground: Int,
+    taskIcon: ImageVector,
+    taskBackground: Color,
     taskName: String
 ) {
     Box(
@@ -324,7 +320,7 @@ fun HourTaskBlock(
             .fillMaxWidth()
             .fillMaxHeight()
             .background(
-                colorResource(id = taskBackground),
+                taskBackground,
                 shape = RoundedCornerShape(4.dp)
             )
     ) {
@@ -352,12 +348,12 @@ fun HourTaskBlock(
 @Composable
 fun TaskBlockIcon(
     modifier: Modifier,
-    id: Int,
+    icon: ImageVector,
     taskName: String
 ) {
     Icon(
         modifier = modifier,
-        painter = painterResource(id = id),
+        imageVector = icon,
         contentDescription = taskName,
         tint = Color.White.copy(alpha = .86f),
     )

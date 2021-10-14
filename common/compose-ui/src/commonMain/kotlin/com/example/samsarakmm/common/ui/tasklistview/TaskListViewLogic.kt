@@ -4,7 +4,6 @@ import com.example.samsarakmm.common.BaseViewLogic
 import com.example.samsarakmm.common.DispatcherProvider
 import com.example.samsarakmm.common.IStorageService
 import com.example.samsarakmm.common.domain.constants.Messages.GENERIC_ERROR_MESSAGE
-
 import com.example.samsarakmm.ui.tasklistview.ITaskListViewContract
 import com.example.samsarakmm.ui.tasklistview.TaskListViewEvent
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel

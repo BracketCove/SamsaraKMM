@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui.tasklistview
+package com.example.samsarakmm.common.ui.tasklistview
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -8,22 +8,21 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.samsarakmm.android.R
-import com.example.samsarakmm.android.common.toResId
-import com.example.samsarakmm.android.ui.components.AppToolbar
-import com.example.samsarakmm.android.ui.components.LoadingScreen
 import com.example.samsarakmm.common.domain.Task
 import com.example.samsarakmm.common.domain.constants.ICON
+import com.example.samsarakmm.common.ui.components.AppToolbar
+import com.example.samsarakmm.common.ui.components.LoadingScreen
+import com.example.samsarakmm.common.ui.toImageVector
 import com.example.samsarakmm.ui.tasklistview.TaskListViewEvent
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
 
@@ -63,7 +62,7 @@ fun TaskListViewContent(
         Column {
             AppToolbar(
                 modifier = Modifier,
-                title = stringResource(id = R.string.tasks),
+                title =  "Tasks",
                 iconBack = { TaskListIconBack(eventHandler = eventHandler) }
             )
 
@@ -148,9 +147,7 @@ fun TaskListItem(
                 modifier = Modifier
                     .size(48.dp)
                     .align(CenterHorizontally),
-                painter = painterResource(
-                    icon.toResId(),
-                ),
+                imageVector = icon.toImageVector,
                 contentDescription = null,
                 tint = Color.White.copy(alpha = .86f),
             )
@@ -169,7 +166,7 @@ fun TaskListIconBack(
     eventHandler: (TaskListViewEvent) -> Unit
 ) {
     Icon(
-        painterResource(id = R.drawable.ic_navigate_before_white_24dp),
+        imageVector = Icons.Default.NavigateBefore,
         modifier = Modifier
             .clickable(onClick = { eventHandler.invoke(TaskListViewEvent.OnBackPressed) })
             .padding(horizontal = 16.dp, vertical = 16.dp)

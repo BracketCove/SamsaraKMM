@@ -1,12 +1,13 @@
-package com.example.samsarakmm.android.ui.dayview
+package com.example.samsarakmm.common.ui.dayview
 
-import androidx.annotation.IntegerRes
-import com.example.samsarakmm.android.common.toResId
-import com.example.samsarakmm.android.ui.ui.dayview.LIST_ITEM_BLOCK_TYPE
-import com.example.samsarakmm.android.ui.ui.dayview.LIST_ITEM_TYPE
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.samsarakmm.common.domain.Day
 import com.example.samsarakmm.common.domain.Hour
 import com.example.samsarakmm.common.domain.Tasks
+import com.example.samsarakmm.common.domain.constants.ICON
+import com.example.samsarakmm.common.ui.toColor
+import com.example.samsarakmm.common.ui.toImageVector
 import getHourBlockText
 
 /**
@@ -25,8 +26,8 @@ import getHourBlockText
  */
 class DayListItemModel(
     val hourBlockText: String,
-    @field:IntegerRes val iconResId: IntArray,
-    @field:IntegerRes val backgroundResId: IntArray,
+    val icons: Array<ImageVector>,
+    val backgrounds: Array<Color>,
     val taskNames: Array<String>,
     val types: List<LIST_ITEM_BLOCK_TYPE>
 )
@@ -98,15 +99,15 @@ internal fun Day.toDayListItemModels(tasks: Tasks): List<DayListItemModel> {
 
     hours.forEach { hour ->
 
-        val icons = mutableListOf<Int>()
-        val backgrounds = mutableListOf<Int>()
+        val icons = mutableListOf<ImageVector>()
+        val backgrounds = mutableListOf<Color>()
         val taskNames = mutableListOf<String>()
 
         hour.quarters.filter { it.isActive }.forEachIndexed { index, quarter ->
             val task = tasks.getTaskById(quarter.taskId)
-            icons.add(task!!.taskIcon.toResId())
-            backgrounds.add(task.taskColor.toResId())
-            taskNames.add(task!!.taskName)
+            icons.add(task!!.taskIcon.toImageVector)
+            backgrounds.add(task.taskColor.toColor)
+            taskNames.add(task.taskName)
         }
 
         val types = hour.getListItemType().toBlockList()
@@ -114,8 +115,8 @@ internal fun Day.toDayListItemModels(tasks: Tasks): List<DayListItemModel> {
         items.add(
             DayListItemModel(
                 getHourBlockText(hour.hourInteger, mode),
-                icons.toIntArray(),
-                backgrounds.toIntArray(),
+                icons.toTypedArray(),
+                backgrounds.toTypedArray(),
                 taskNames.toTypedArray(),
                 types
                 )

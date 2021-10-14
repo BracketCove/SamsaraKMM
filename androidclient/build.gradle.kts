@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    val compose_version = "1.0.1"
+    val compose_version = "1.0.3"
 
     implementation(project(":common:database"))
     implementation(project(":common:compose-ui"))
@@ -35,17 +35,6 @@ dependencies {
     implementation(Deps.AndroidX.Activity.activityCompose)
     implementation(Deps.JetBrains.Kotlin.coroutinesJVM)
     implementation(Deps.JetBrains.Kotlin.coroutinesCore)
-
-    //todo delete if these are already added by the compose plugin
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02")
-    implementation("androidx.compose.ui:ui:$compose_version")
-    implementation("androidx.activity:activity-ktx:1.3.1")
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
-    implementation("androidx.compose.ui:ui-tooling:$compose_version")
-    implementation("androidx.compose.material:material:$compose_version")
-    implementation("androidx.compose.material:material-icons-extended:$compose_version")
 
 }
 

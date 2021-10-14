@@ -15,6 +15,8 @@ kotlin {
         named("jvmMain") {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(compose.ui)
+                implementation(compose.material)
                 implementation(project(":common:compose-ui"))
                 implementation(project(":common:database"))
                 implementation(project(":common:main"))

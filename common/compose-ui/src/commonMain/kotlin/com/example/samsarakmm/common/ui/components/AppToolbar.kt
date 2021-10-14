@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui.components
+package com.example.samsarakmm.common.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.MaterialTheme

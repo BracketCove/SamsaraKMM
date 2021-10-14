@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui.components
+package com.example.samsarakmm.common.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
@@ -8,10 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.samsarakmm.android.ui.mainTitle
-import com.example.samsarakmm.android.R
+import com.example.samsarakmm.common.ui.mainTitle
 
 
 @Composable
@@ -35,7 +33,7 @@ fun LoadingScreen() {
             )
 
             Text(
-                text = stringResource(id = R.string.loading),
+                text = "Loading",
                 style = mainTitle.copy(color = MaterialTheme.colors.secondary),
                 modifier = Modifier.wrapContentSize()
             )

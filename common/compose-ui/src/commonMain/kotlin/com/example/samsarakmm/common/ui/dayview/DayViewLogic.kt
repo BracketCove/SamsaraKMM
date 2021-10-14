@@ -1,12 +1,11 @@
 package com.example.samsarakmm.common.ui.dayview
 
 import com.example.samsarakmm.common.BaseViewLogic
-import com.example.samsarakmm.common.DispatcherProvider
+import com.example.samsarakmm.common.IDispatcherProvider
 import com.example.samsarakmm.common.IStorageService
 import com.example.samsarakmm.common.domain.Day
 import com.example.samsarakmm.common.domain.Tasks
 import com.example.samsarakmm.common.domain.constants.Messages
-
 import com.example.samsarakmm.ui.dayview.DayViewEvent
 import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.ui.dayview.IDayViewContract
@@ -21,7 +20,7 @@ class DayViewLogic(
     private val container: IDayViewContract.Container,
     private val vm: DayViewModel,
     private val storage: IStorageService,
-    private val dispatcher: DispatcherProvider
+    private val dispatcher: IDispatcherProvider
 ) : BaseViewLogic<DayViewEvent>(), CoroutineScope {
 
     init {

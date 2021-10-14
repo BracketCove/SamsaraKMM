@@ -1,4 +1,5 @@
 import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -18,13 +19,14 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                implementation(compose.ui)
+                implementation(compose.materialIconsExtended)
             }
         }
 
         named("androidMain") {
             dependencies {
-                implementation("androidx.appcompat:appcompat:1.3.0-beta01")
-                implementation("androidx.core:core-ktx:1.3.1")
+                implementation("androidx.core:core-ktx:1.6.0")
             }
         }
 

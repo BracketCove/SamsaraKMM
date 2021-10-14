@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui
+package com.example.samsarakmm.common.ui
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.graphics.Color
@@ -17,7 +17,8 @@ val typography = Typography(
     ),
     h4 = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 41.sp
+        fontSize = 41.sp,
+        color = accent.copy(alpha = 0.87f)
     ),
     h6 = TextStyle(
         fontWeight = FontWeight.Normal,
@@ -32,12 +33,12 @@ internal val hourBlockText = TextStyle(
     color = Color.White.copy(alpha = .86f)
 )
 
-internal val halfAndThreeQuarterHourBlockText = TextStyle(
+val halfAndThreeQuarterHourBlockText = TextStyle(
     fontSize = 20.sp,
     color = Color.White.copy(alpha = .86f)
 )
 
-internal val quarterHourBlockText = TextStyle(
+val quarterHourBlockText = TextStyle(
     fontSize = 14.sp,
     color = Color.White.copy(alpha = .86f)
 )

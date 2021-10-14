@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui.managetaskview
+package com.example.samsarakmm.common.ui.managetaskview
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,23 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.samsarakmm.android.R
-import com.example.samsarakmm.android.common.toResId
-import com.example.samsarakmm.android.ui.components.AppToolbar
-import com.example.samsarakmm.android.ui.components.LoadingScreen
-import com.example.samsarakmm.android.ui.dropdownText
-import com.example.samsarakmm.android.ui.halfAndThreeQuarterHourBlockText
-import com.example.samsarakmm.android.ui.quarterHourBlockText
+import com.example.samsarakmm.common.STRING_DROPDOWN
+import com.example.samsarakmm.common.STRING_MANAGE_TASK
+import com.example.samsarakmm.common.STRING_NAME
 import com.example.samsarakmm.common.domain.constants.COLOR
 import com.example.samsarakmm.common.domain.constants.ICON
 import com.example.samsarakmm.common.domain.constants.ICON_NAMES
+import com.example.samsarakmm.common.ui.*
+import com.example.samsarakmm.common.ui.components.AppToolbar
+import com.example.samsarakmm.common.ui.components.LoadingScreen
 import com.example.samsarakmm.ui.managetaskview.TaskViewEvent
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 
@@ -74,7 +72,7 @@ fun TaskViewContent(
     ) {
         AppToolbar(
             modifier = Modifier,
-            title = stringResource(id = R.string.manage_task),
+            title = STRING_MANAGE_TASK,
             iconAction = { TaskDoneIcon(eventHandler) }
         )
 
@@ -119,7 +117,7 @@ fun TaskViewContent(
         }
 
         ColorDisplay(
-            color = color.toResId()
+            color = color
         )
 
         Spacer(Modifier.height(32.dp))
@@ -149,7 +147,7 @@ fun NameField(
         },
         label = {
             Text(
-                stringResource(id = R.string.name),
+                STRING_NAME,
                 color = MaterialTheme.colors.secondary
             )
         },
@@ -212,7 +210,7 @@ fun ColorPickerButton(
             .padding(24.dp),
         onClick = { eventHandler(TaskViewEvent.OnColorSelected(color)) },
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = colorResource(id = color.toResId())
+            backgroundColor = color.toColor
         ),
         shape = CircleShape
     ) {
@@ -223,7 +221,7 @@ fun ColorPickerButton(
 
 @Composable
 fun ColorDisplay(
-    color: Int
+    color: COLOR
 ) {
     //For some reason applying padding to child box doesn't work
     Row(Modifier.padding(start = 32.dp, end = 32.dp)) {
@@ -232,10 +230,9 @@ fun ColorDisplay(
                 .height(64.dp)
                 .fillMaxWidth()
                 .background(
-                    color = colorResource(id = color),
+                    color = color.toColor,
                     shape = RoundedCornerShape(2.dp)
-                )
-                ,
+                ),
             contentAlignment = Alignment.Center
 
         ) {
@@ -243,7 +240,7 @@ fun ColorDisplay(
                 modifier = Modifier
                     .fillMaxWidth(),
                 style = quarterHourBlockText,
-                text = stringResource(id = R.string.color),
+                text = color.name,
                 textAlign = TextAlign.Center
             )
         }
@@ -288,7 +285,7 @@ fun TaskDropdown(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .size(36.dp),
-                painter = painterResource(id = selectedIcon.toResId()),
+                imageVector = selectedIcon.toImageVector,
                 contentDescription = names[menuIndex],
                 tint = Color.White.copy(alpha = .86f),
             )
@@ -303,7 +300,7 @@ fun TaskDropdown(
             )
 
             Icon(
-                contentDescription = stringResource(R.string.dropdown),
+                contentDescription = STRING_DROPDOWN,
                 imageVector = Icons.Outlined.ArrowDropDown,
                 tint = MaterialTheme.colors.secondary,
                 modifier = Modifier
@@ -316,7 +313,7 @@ fun TaskDropdown(
                     .align(Alignment.CenterVertically)
             )
 
-            DropdownMenu(
+            DropdownMenuContent(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false },
             ) {
@@ -339,7 +336,7 @@ fun TaskDropdown(
 
                             Icon(
                                 contentDescription = names[index],
-                                painter = painterResource(icons[index].toResId()),
+                                imageVector = icons[index].toImageVector,
                                 tint = Color.White.copy(alpha = .87f),
                                 modifier = Modifier.size(36.dp)
                             )
@@ -365,7 +362,7 @@ fun TaskDoneIcon(
     eventHandler: (TaskViewEvent) -> Unit
 ) {
     Icon(
-        painterResource(id = R.drawable.ic_done_white_24dp),
+       imageVector = Icons.Default.Done,
         modifier = Modifier
             .clickable(onClick = { eventHandler.invoke(TaskViewEvent.OnDoneClick) })
             .padding(horizontal = 16.dp, vertical = 16.dp)

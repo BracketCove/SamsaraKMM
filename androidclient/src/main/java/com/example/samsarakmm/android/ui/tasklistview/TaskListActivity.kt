@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.example.samsarakmm.android.SamsaraApp
 import com.example.samsarakmm.android.common.showToast
-import com.example.samsarakmm.android.ui.SamsaraTheme
 import com.example.samsarakmm.android.ui.dayview.DayActivity
 import com.example.samsarakmm.android.ui.managetaskview.TaskActivity
 import com.example.samsarakmm.android.ui.tasklistview.buildlogic.buildLogic
 import com.example.samsarakmm.common.BaseViewLogic
 import com.example.samsarakmm.common.domain.constants.Extras
+import com.example.samsarakmm.common.ui.SamsaraTheme
+import com.example.samsarakmm.common.ui.tasklistview.TaskListScreen
 import com.example.samsarakmm.ui.tasklistview.ITaskListViewContract
 import com.example.samsarakmm.ui.tasklistview.TaskListViewEvent
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
@@ -35,8 +35,7 @@ class TaskListActivity : AppCompatActivity(), ITaskListViewContract.Container {
         }
 
         logic = buildLogic(
-            viewModel,
-            (application as SamsaraApp).serviceLocator
+            viewModel
         )
     }
 

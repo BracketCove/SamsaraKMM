@@ -1,10 +1,11 @@
-package com.example.samsarakmm.ui.managehourview
+package com.example.samsarakmm.common.ui.managehourview
 
 import com.example.samsarakmm.common.BaseViewModel
+import com.example.samsarakmm.common.domain.Task
 import com.example.samsarakmm.common.domain.constants.HOUR_MODE
 
 class HourViewModel(val hourInt: Int): BaseViewModel() {
-    lateinit var taskNames: List<String>
+    lateinit var tasks: List<Task>
     lateinit var hourMode: HOUR_MODE
 
     //:00 first quarter always active

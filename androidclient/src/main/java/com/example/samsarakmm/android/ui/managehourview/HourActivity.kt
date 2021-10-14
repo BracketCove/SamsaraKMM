@@ -5,16 +5,16 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.example.samsarakmm.android.SamsaraApp
 import com.example.samsarakmm.android.common.showToast
-import com.example.samsarakmm.android.ui.SamsaraTheme
 import com.example.samsarakmm.android.ui.dayview.DayActivity
 import com.example.samsarakmm.android.ui.managehourview.buildlogic.buildLogic
 import com.example.samsarakmm.common.BaseViewLogic
 import com.example.samsarakmm.common.domain.constants.Extras
 import com.example.samsarakmm.common.domain.constants.Messages.GENERIC_ERROR_MESSAGE
+import com.example.samsarakmm.common.ui.SamsaraTheme
+import com.example.samsarakmm.common.ui.managehourview.HourScreen
 import com.example.samsarakmm.ui.managehourview.HourViewEvent
-import com.example.samsarakmm.ui.managehourview.HourViewModel
+import com.example.samsarakmm.common.ui.managehourview.HourViewModel
 import com.example.samsarakmm.ui.managehourview.IHourContract
 
 class HourActivity : AppCompatActivity(), IHourContract.Container {
@@ -51,8 +51,7 @@ class HourActivity : AppCompatActivity(), IHourContract.Container {
         }
 
         logic = buildLogic(
-            vm,
-            (application as SamsaraApp).serviceLocator
+            vm
         )
     }
 

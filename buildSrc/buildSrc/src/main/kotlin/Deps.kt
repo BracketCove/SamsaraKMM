@@ -18,7 +18,13 @@ object Deps {
             // __LATEST_COMPOSE_RELEASE_VERSION__
             private const val VERSION = "1.0.0-alpha2"
             const val gradlePlugin = "org.jetbrains.compose:compose-gradle-plugin:$VERSION"
+            const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+
         }
+    }
+
+    object ImageLoader {
+        const val imageLoader = "com.alialbaali.kamel:kamel-image:0.2.2"
     }
 
     object Android {

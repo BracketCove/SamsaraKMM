@@ -1,4 +1,4 @@
-package com.example.samsarakmm.android.ui.ui.dayview
+package com.example.samsarakmm.common.ui.dayview
 
 
 /**

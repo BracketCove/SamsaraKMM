@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
+                implementation(Deps.JetBrains.Kotlin.coroutinesJVM)
             }
         }
     }
