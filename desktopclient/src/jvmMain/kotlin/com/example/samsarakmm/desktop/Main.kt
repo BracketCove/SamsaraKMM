@@ -17,6 +17,7 @@ import com.example.samsarakmm.desktop.ui.TaskListViewContainer
 import com.example.samsarakmm.desktop.ui.TaskViewContainer
 import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.common.ui.managehourview.HourViewModel
+import com.example.samsarakmm.common.ui.tasklistview.TaskListScreen
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
 
@@ -66,8 +67,8 @@ fun main() = application {
                         storageService
                     )
                     TaskListScreen(
-                        container.logic::onViewEvent,
-                        vm
+                        vm,
+                        container.logic::onViewEvent
                     )
                 }
                 WindowState.VIEW_MANAGE_TASK -> TODO()

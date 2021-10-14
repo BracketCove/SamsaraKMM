@@ -5,7 +5,7 @@ import com.example.samsarakmm.common.domain.Task
 import com.example.samsarakmm.common.domain.constants.HOUR_MODE
 
 class HourViewModel(val hourInt: Int): BaseViewModel() {
-    lateinit var tasks: List<Task>
+    lateinit var taskNames: List<String>
     lateinit var hourMode: HOUR_MODE
 
     //:00 first quarter always active

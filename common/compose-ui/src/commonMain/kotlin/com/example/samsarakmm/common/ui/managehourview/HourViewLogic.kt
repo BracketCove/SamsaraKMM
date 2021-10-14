@@ -10,6 +10,7 @@ import com.example.samsarakmm.common.domain.constants.HOUR_MODE
 import com.example.samsarakmm.common.domain.constants.Messages.GENERIC_ERROR_MESSAGE
 import com.example.samsarakmm.common.domain.constants.QUARTER
 import com.example.samsarakmm.ui.managehourview.HourViewEvent
+import com.example.samsarakmm.common.ui.managehourview.HourViewModel
 import com.example.samsarakmm.ui.managehourview.IHourContract
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -129,7 +130,7 @@ class HourViewLogic(
     }
 
     private fun onTasksRetrieved(tasks: Tasks, hour: Hour) {
-        vm.taskNames = tasks.get().toList()
+        vm.taskNames = tasks.get().map { task -> task.taskName }
         initializeViewData(hour)
     }
 

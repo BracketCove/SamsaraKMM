@@ -30,6 +30,8 @@ import com.example.samsarakmm.common.domain.constants.ICON_NAMES
 import com.example.samsarakmm.common.ui.*
 import com.example.samsarakmm.common.ui.components.AppToolbar
 import com.example.samsarakmm.common.ui.components.LoadingScreen
+import com.example.samsarakmm.common.ui.managehourview.TaskDropdownMenu
+import com.example.samsarakmm.ui.managehourview.HourViewEvent
 import com.example.samsarakmm.ui.managetaskview.TaskViewEvent
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 
@@ -313,46 +315,21 @@ fun TaskDropdown(
                     .align(Alignment.CenterVertically)
             )
 
-            DropdownMenuContent(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false },
-            ) {
-                icons.forEachIndexed { index, _ ->
-                    DropdownMenuItem(
-                        onClick = {
-                            menuIndex = index
-                            showMenu = false
-                            eventHandler.invoke(
-                                TaskViewEvent.OnIconSelected(
-                                    icons[index]
-                                )
-                            )
-                        },
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .background(MaterialTheme.colors.primaryVariant)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-
-                            Icon(
-                                contentDescription = names[index],
-                                imageVector = icons[index].toImageVector,
-                                tint = Color.White.copy(alpha = .87f),
-                                modifier = Modifier.size(36.dp)
-                            )
-
-                            Text(
-                                text = names[index],
-                                style = dropdownText(Color.White.copy(alpha = .87f)),
-                                modifier = Modifier.padding(start = 8.dp),
-                                overflow = TextOverflow.Ellipsis,
-                                maxLines = 1
-                            )
-
-                        }
-                    }
-                }
-            }
+            TaskIconDropdownMenu(
+                iconNames = names,
+                icons = icons,
+                showMenu,
+                { showMenu = false },
+                { icon ->
+                    showMenu = false
+                    eventHandler.invoke(
+                        TaskViewEvent.OnIconSelected(
+                            icon
+                        )
+                    )
+                },
+                menuIndex
+            )
         }
     }
 }

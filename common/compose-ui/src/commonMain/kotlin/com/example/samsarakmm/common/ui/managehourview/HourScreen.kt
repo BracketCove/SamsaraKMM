@@ -1,23 +1,26 @@
 package com.example.samsarakmm.common.ui.managehourview
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.example.samsarakmm.common.STRING_DROPDOWN
 import com.example.samsarakmm.common.STRING_MANAGE_HOUR
 import com.example.samsarakmm.common.domain.Task
 import com.example.samsarakmm.common.domain.constants.QUARTER
-import com.example.samsarakmm.common.ui.*
 import com.example.samsarakmm.common.ui.components.AppToolbar
 import com.example.samsarakmm.common.ui.components.LoadingScreen
-import com.example.samsarakmm.common.ui.components.TaskPickerButton
+import com.example.samsarakmm.common.ui.halfAndThreeQuarterHourBlockText
 import com.example.samsarakmm.ui.managehourview.HourViewEvent
 import getHourToggleViewFormattedText
 
@@ -95,7 +98,7 @@ fun FirstQuarter(
             viewModel.hourInt,
             viewModel.hourMode
         ),
-        tasks = viewModel.tasks,
+        taskNames = viewModel.taskNames,
         quarter = QUARTER.ZERO,
         eventHandler = eventHandler,
         showToggle = false
@@ -132,7 +135,7 @@ fun SecondQuarter(
             viewModel.hourInt,
             viewModel.hourMode
         ),
-        tasks = viewModel.tasks,
+        taskNames = viewModel.taskNames,
         quarter = QUARTER.FIFTEEN,
         eventHandler = eventHandler
     )
@@ -168,7 +171,7 @@ fun ThirdQuarter(
             viewModel.hourInt,
             viewModel.hourMode
         ),
-        tasks = viewModel.tasks,
+        taskNames = viewModel.taskNames,
         quarter = QUARTER.THIRTY,
         eventHandler = eventHandler
     )
@@ -204,7 +207,7 @@ fun FourthQuarter(
             viewModel.hourInt,
             viewModel.hourMode
         ),
-        tasks = viewModel.tasks,
+        taskNames = viewModel.taskNames,
         quarter = QUARTER.FOURTY_FIVE,
         eventHandler = eventHandler,
         showBottomDivider = false
@@ -216,7 +219,7 @@ fun QuarterHourBlock(
     active: Boolean,
     selectedTask: Int,
     timeText: String,
-    tasks: List<Task>,
+    taskNames: List<String>,
     showBottomDivider: Boolean = true,
     showToggle: Boolean = true,
     quarter: QUARTER,
@@ -243,11 +246,12 @@ fun QuarterHourBlock(
                     )
                 )
 
-                HourTaskPicker(
+                HourDropdown(
                     modifier = Modifier
                         .wrapContentWidth(),
                     eventHandler = eventHandler,
-                    tasks = tasks,
+                    selectedTask = selectedTask,
+                    taskNames = taskNames,
                     quarter = quarter
                 )
 
@@ -290,84 +294,77 @@ fun QuarterHourBlock(
 }
 
 @Composable
-fun HourTaskPicker(
-    eventHandler: (HourViewEvent) -> Unit,
+fun HourDropdown(
     modifier: Modifier,
-    tasks: List<Task>,
+    eventHandler: (HourViewEvent) -> Unit,
+    selectedTask: Int,
+    taskNames: List<String>,
     quarter: QUARTER
 ) {
-    BoxWithConstraints(modifier) {
-        val size = with(LocalDensity.current) { (constraints.maxWidth / 3).toDp() }
+    var showMenu by remember { mutableStateOf(false) }
 
-        Column {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(size)
-            ) {
-                (0..2).forEach {
-                    TaskPickerButton(
-                        task = tasks[it],
-                        modifier = Modifier.size(size).clickable(
-                            onClick = {
-                                eventHandler(
-                                    HourViewEvent.OnTaskSelected(
-                                        quarter,
-                                        tasks[it].taskId
-                                    )
-                                )
-                            }
+    var menuIndex by remember {
+        mutableStateOf(
+            selectedTask
+        )
+    }
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            Modifier.clickable(
+                onClick = { showMenu = true }
+            )
+        ) {
+            Text(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 32.dp),
+                text = taskNames[menuIndex],
+                style = halfAndThreeQuarterHourBlockText
+            )
+
+            Icon(
+                contentDescription = STRING_DROPDOWN,
+                imageVector = Icons.Outlined.ArrowDropDown,
+                tint = MaterialTheme.colors.secondary,
+                modifier = Modifier
+                    .size(48.dp)
+                    .rotate(
+                        animateFloatAsState(
+                            if (!showMenu) 0f else 180f,
+                        ).value
+                    )
+                    .align(Alignment.CenterVertically)
+            )
+
+            TaskDropdownMenu(
+                taskNames = taskNames,
+                showMenu,
+                { showMenu = false },
+                { index ->
+                    menuIndex = index
+                    showMenu = false
+                    eventHandler.invoke(
+                        HourViewEvent.OnTaskSelected(
+                            quarter,
+                            index
                         )
                     )
-                }
-            }
+                },
+                menuIndex,
+                quarter
+            )
+           ///on menu item click
 
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(size)
-            ) {
-                (3..5).forEach {
-                    TaskPickerButton(
-                        task = tasks[it],
-                        modifier = Modifier.size(size).clickable(
-                            onClick = {
-                                eventHandler(
-                                    HourViewEvent.OnTaskSelected(
-                                        quarter,
-                                        tasks[it].taskId
-                                    )
-                                )
-                            }
-                        )
-                    )
-                }
-            }
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(size)
-            ) {
-                (6..8).forEach {
-                    TaskPickerButton(
-                        task = tasks[it],
-                        modifier = Modifier.size(size).clickable(
-                            onClick = {
-                                eventHandler(
-                                    HourViewEvent.OnTaskSelected(
-                                        quarter,
-                                        tasks[it].taskId
-                                    )
-                                )
-                            }
-                        )
-                    )
-                }
-            }
         }
     }
 }
+
+
 
 @Composable
 fun HourDoneIcon(
