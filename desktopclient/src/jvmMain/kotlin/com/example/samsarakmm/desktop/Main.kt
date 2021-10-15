@@ -12,14 +12,14 @@ import com.example.samsarakmm.common.database.StorageService
 import com.example.samsarakmm.common.ui.SamsaraTheme
 import com.example.samsarakmm.common.ui.dayview.DayViewScreen
 import com.example.samsarakmm.common.ui.managehourview.HourScreen
+import com.example.samsarakmm.common.ui.managehourview.HourViewModel
+import com.example.samsarakmm.common.ui.managetaskview.TaskScreen
+import com.example.samsarakmm.common.ui.tasklistview.TaskListScreen
 import com.example.samsarakmm.desktop.ui.DayViewContainer
 import com.example.samsarakmm.desktop.ui.HourViewContainer
 import com.example.samsarakmm.desktop.ui.TaskListViewContainer
 import com.example.samsarakmm.desktop.ui.TaskViewContainer
 import com.example.samsarakmm.ui.dayview.DayViewModel
-import com.example.samsarakmm.common.ui.managehourview.HourViewModel
-import com.example.samsarakmm.common.ui.managetaskview.TaskScreen
-import com.example.samsarakmm.common.ui.tasklistview.TaskListScreen
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
 
@@ -42,8 +42,10 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Todo"
+        title = "Todo",
+        resizable = false
     ) {
+
         SamsaraTheme {
             when (windowState) {
                 WindowState.VIEW_DAY -> {
@@ -112,6 +114,7 @@ fun main() = application {
 
     }
 }
+
 
 fun buildDayFeature(
     stateHandler: (WindowState, Int) -> Unit,

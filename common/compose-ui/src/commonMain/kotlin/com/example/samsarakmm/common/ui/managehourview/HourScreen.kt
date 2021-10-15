@@ -226,11 +226,14 @@ fun QuarterHourBlock(
     eventHandler: (HourViewEvent) -> Unit
 ) {
     Column {
-        Row {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Column(
                 Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+                    .wrapContentSize()
                     .padding(
                         start = 16.dp,
                         end = 16.dp,

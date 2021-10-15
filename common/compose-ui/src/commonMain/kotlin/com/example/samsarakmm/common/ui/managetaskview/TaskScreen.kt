@@ -260,7 +260,6 @@ fun TaskDropdown(
     icons: List<ICON>,
     names: List<String>
 ) {
-
     val initialIndex = selectedIcon.ordinal
 
     var showMenu by remember { mutableStateOf(false) }
@@ -269,8 +268,6 @@ fun TaskDropdown(
             initialIndex
         )
     }
-
-
 
     Column(
         modifier = Modifier

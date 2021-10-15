@@ -84,7 +84,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
                 thirdQuarterIsActive
             ),
             QuarterHour(
-                firstQuarterTaskId,
+                fourthQuarterTaskId,
                 QUARTER.FOURTY_FIVE,
                 fourthQuarterIsActive
             )
