@@ -5,8 +5,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import com.example.samsarakmm.common.database.DatabaseDriverFactory
 import com.example.samsarakmm.common.database.StorageService
 import com.example.samsarakmm.common.ui.SamsaraTheme
@@ -22,11 +24,13 @@ import com.example.samsarakmm.desktop.ui.TaskViewContainer
 import com.example.samsarakmm.ui.dayview.DayViewModel
 import com.example.samsarakmm.ui.managetaskview.TaskViewModel
 import com.example.samsarakmm.ui.tasklistview.TaskListViewModel
+import java.awt.Toolkit
 
 /**
  *
  */
 fun main() = application {
+
 
     val storageService = StorageService(
         DatabaseDriverFactory()
@@ -40,10 +44,16 @@ fun main() = application {
         mutableStateOf(0)
     }
 
+    val screenSize = Toolkit.getDefaultToolkit().screenSize
+
     Window(
+        state = rememberWindowState(
+            width = (screenSize.width*.40).dp,
+            height = (screenSize.height*.95).dp
+        ),
         onCloseRequest = ::exitApplication,
         title = "Todo",
-        resizable = false
+        resizable = false,
     ) {
 
         SamsaraTheme {

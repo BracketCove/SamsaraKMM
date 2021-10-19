@@ -62,7 +62,6 @@ fun HourViewContent(
             .fillMaxSize()
     ) {
         AppToolbar(
-            modifier = Modifier,
             title = STRING_MANAGE_HOUR,
             iconAction = { HourDoneIcon(eventHandler = eventHandler) }
         )
@@ -286,10 +285,10 @@ fun QuarterHourBlock(
         Divider(
             Modifier
                 .background(
-                    color = if (showBottomDivider) Color.White
+                    color = if (showBottomDivider) Color.White.copy(alpha = .46f)
                     else Color.Transparent
                 )
-                .height(2.dp),
+                .height(1.dp),
         )
     }
 

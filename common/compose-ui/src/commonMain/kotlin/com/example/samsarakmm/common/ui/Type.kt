@@ -21,10 +21,11 @@ val typography = Typography(
         color = accent.copy(alpha = 0.87f)
     ),
     h6 = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 3.sp
+        fontWeight = FontWeight.Light,
+        fontSize = 24.sp,
+        letterSpacing = 1.sp,
+        fontFamily = FontFamily.Default,
+        color = Color.White.copy(alpha = 0.87f)
     )
 )
 

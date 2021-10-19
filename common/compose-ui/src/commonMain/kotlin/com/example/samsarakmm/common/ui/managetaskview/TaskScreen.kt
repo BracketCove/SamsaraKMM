@@ -73,7 +73,6 @@ fun TaskViewContent(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         AppToolbar(
-            modifier = Modifier,
             title = STRING_MANAGE_TASK,
             iconAction = { TaskDoneIcon(eventHandler) }
         )

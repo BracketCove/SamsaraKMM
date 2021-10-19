@@ -61,7 +61,6 @@ fun TaskListViewContent(
         //take half for left column
         Column {
             AppToolbar(
-                modifier = Modifier,
                 title =  "Tasks",
                 iconBack = { TaskListIconBack(eventHandler = eventHandler) }
             )

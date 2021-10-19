@@ -56,8 +56,7 @@ fun DayViewContent(
 ) {
     Column {
         AppToolbar(
-            modifier = Modifier,
-            title = "Tasks",
+            title = "Day Planner",
             iconAction = { DayViewIconTasks(eventHandler = eventHandler) }
         )
 

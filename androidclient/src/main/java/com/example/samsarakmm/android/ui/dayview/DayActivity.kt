@@ -2,6 +2,7 @@ package com.example.samsarakmm.android.ui.dayview
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.example.samsarakmm.android.common.showToast
@@ -22,7 +23,7 @@ class DayActivity : AppCompatActivity(), IDayViewContract.Container {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        View.OnClickListener {  }
         val viewModel = DayViewModel()
 
         setContent {
