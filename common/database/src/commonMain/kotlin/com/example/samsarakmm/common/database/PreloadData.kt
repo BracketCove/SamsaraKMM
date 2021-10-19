@@ -60,7 +60,7 @@ internal object PreloadData {
     //10pm sleep
     val preloadedDay: Day
         get() = Day(
-            HOUR_MODE.TWELVE_HOUR, arrayOf( //sleep 22-6 hours (10pm-6am)
+            HOUR_MODE.TWENTY_FOUR_HOUR, arrayOf( //sleep 22-6 hours (10pm-6am)
                 getHour(7, 0),
                 getHour(7, 1),
                 getHour(7, 2),

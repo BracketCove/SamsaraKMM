@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.example.samsarakmm.common.database.DatabaseDriverFactory
@@ -49,7 +50,11 @@ fun main() = application {
     Window(
         state = rememberWindowState(
             width = (screenSize.width*.40).dp,
-            height = (screenSize.height*.95).dp
+            height = (screenSize.height*.95).dp,
+            position = WindowPosition(
+                y = 0.dp,
+                x = 0.dp
+            )
         ),
         onCloseRequest = ::exitApplication,
         title = "Todo",

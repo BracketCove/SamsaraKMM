@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.samsarakmm.common.STRING_DROPDOWN
@@ -163,37 +164,39 @@ fun ColorPicker(
     modifier: Modifier
 ) {
     BoxWithConstraints(modifier) {
-        val size = with(LocalDensity.current) { (constraints.maxWidth / 3).toDp() }
-
-        Column {
+        val size = with(LocalDensity.current) { (constraints.maxWidth).toDp() }
+        val circleSize = with(LocalDensity.current) { (constraints.maxWidth*.3f).toDp() }
+        Column(
+            Modifier.size(size)
+        ) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(size)
+                    .weight(.33f)
             ) {
-                ColorPickerButton(COLOR.DARK_BLUE, size, eventHandler)
-                ColorPickerButton(COLOR.BURNT_ORANGE, size, eventHandler)
-                ColorPickerButton(COLOR.GREEN, size, eventHandler)
+                ColorPickerButton(COLOR.DARK_BLUE, circleSize, eventHandler)
+                ColorPickerButton(COLOR.BURNT_ORANGE, circleSize, eventHandler)
+                ColorPickerButton(COLOR.GREEN, circleSize, eventHandler)
             }
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(size)
+                    .weight(.33f)
             ) {
-                ColorPickerButton(COLOR.DARK_RED, size, eventHandler)
-                ColorPickerButton(COLOR.DARK_LIME, size, eventHandler)
-                ColorPickerButton(COLOR.LIGHT_BLUE, size, eventHandler)
+                ColorPickerButton(COLOR.DARK_RED, circleSize, eventHandler)
+                ColorPickerButton(COLOR.DARK_LIME, circleSize, eventHandler)
+                ColorPickerButton(COLOR.LIGHT_BLUE, circleSize, eventHandler)
             }
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(size)
+                    .weight(.33f)
             ) {
-                ColorPickerButton(COLOR.MAUVE, size, eventHandler)
-                ColorPickerButton(COLOR.BROWN, size, eventHandler)
-                ColorPickerButton(COLOR.TEAL, size, eventHandler)
+                ColorPickerButton(COLOR.MAUVE, circleSize, eventHandler)
+                ColorPickerButton(COLOR.BROWN, circleSize, eventHandler)
+                ColorPickerButton(COLOR.TEAL, circleSize, eventHandler)
             }
         }
     }
@@ -208,7 +211,7 @@ fun ColorPickerButton(
     Button(
         modifier = Modifier
             .size(size)
-            .padding(24.dp),
+            .padding(32.dp),
         onClick = { eventHandler(TaskViewEvent.OnColorSelected(color)) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = color.toColor
@@ -241,7 +244,7 @@ fun ColorDisplay(
                 modifier = Modifier
                     .fillMaxWidth(),
                 style = quarterHourBlockText,
-                text = color.name,
+                text = color.name.replace('_', ' '),
                 textAlign = TextAlign.Center
             )
         }

@@ -17,10 +17,13 @@ import androidx.compose.ui.unit.dp
 import com.example.samsarakmm.common.STRING_DROPDOWN
 import com.example.samsarakmm.common.STRING_MANAGE_HOUR
 import com.example.samsarakmm.common.domain.Task
+import com.example.samsarakmm.common.domain.constants.ICON
 import com.example.samsarakmm.common.domain.constants.QUARTER
 import com.example.samsarakmm.common.ui.components.AppToolbar
 import com.example.samsarakmm.common.ui.components.LoadingScreen
+import com.example.samsarakmm.common.ui.dropdownText
 import com.example.samsarakmm.common.ui.halfAndThreeQuarterHourBlockText
+import com.example.samsarakmm.common.ui.typography
 import com.example.samsarakmm.ui.managehourview.HourViewEvent
 import getHourToggleViewFormattedText
 
@@ -225,39 +228,34 @@ fun QuarterHourBlock(
     eventHandler: (HourViewEvent) -> Unit
 ) {
     Column {
+        Spacer(
+            modifier = Modifier
+                .height(32.dp)
+        )
+
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 32.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                Modifier
-                    .wrapContentSize()
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 8.dp
-                    )
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = timeText,
-                    style = MaterialTheme.typography.h4.copy(
-                        color = if (active) MaterialTheme.colors.secondary
-                        else MaterialTheme.colors.onPrimary
-                    )
+            Text(
+                modifier = Modifier,
+                text = timeText,
+                style = typography.h5.copy(
+                    color = if (active) MaterialTheme.colors.secondary
+                    else MaterialTheme.colors.onPrimary
                 )
+            )
 
-                HourDropdown(
-                    modifier = Modifier
-                        .wrapContentWidth(),
-                    eventHandler = eventHandler,
-                    selectedTask = selectedTask,
-                    taskNames = taskNames,
-                    quarter = quarter
-                )
 
-            }
+            HourDropdown(
+                modifier = Modifier
+                    .wrapContentWidth(),
+                eventHandler = eventHandler,
+                selectedTask = selectedTask,
+                taskNames = taskNames,
+                quarter = quarter
+            )
 
             Switch(
                 checked = active,
@@ -279,7 +277,7 @@ fun QuarterHourBlock(
 
         Spacer(
             modifier = Modifier
-                .height(4.dp)
+                .height(32.dp)
         )
 
         Divider(
@@ -326,7 +324,7 @@ fun HourDropdown(
                     .align(Alignment.CenterVertically)
                     .padding(start = 32.dp),
                 text = taskNames[menuIndex],
-                style = halfAndThreeQuarterHourBlockText
+                style = dropdownText(Color.White.copy(alpha = .87f))
             )
 
             Icon(
@@ -360,12 +358,11 @@ fun HourDropdown(
                 menuIndex,
                 quarter
             )
-           ///on menu item click
+            ///on menu item click
 
         }
     }
 }
-
 
 
 @Composable

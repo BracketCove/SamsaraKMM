@@ -25,6 +25,7 @@ actual fun TaskDropdownMenu(
     quarter: QUARTER
 ) {
     DropdownMenu(
+        modifier = Modifier.background(MaterialTheme.colors.primaryVariant),
         expanded = showMenu,
         onDismissRequest = onDismiss,
     ) {

@@ -20,6 +20,12 @@ val typography = Typography(
         fontSize = 41.sp,
         color = accent.copy(alpha = 0.87f)
     ),
+    h5 = TextStyle(
+        fontWeight = FontWeight.Thin,
+        fontSize = 54.sp,
+        fontFamily = FontFamily.Default,
+        color = Color.White.copy(alpha = 0.87f)
+    ),
     h6 = TextStyle(
         fontWeight = FontWeight.Light,
         fontSize = 24.sp,
